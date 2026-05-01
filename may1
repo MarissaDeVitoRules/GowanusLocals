@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gowanus Locals — Brooklyn's Canal Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0d0d0d;
+    --charcoal: #1a1a1a;
+    --steel: #2c2c2c;
+    --iron: #3d3d3d;
+    --rust: #2E8B57;
+    --rust-bright: #3aab6d;
+    --rust-light: #52c47f;
+    --amber: #2E8B57;
+    --cream: #f0ead8;
+    --cream-dark: #e0d8c2;
+    --stone: #8a8278;
+    --mist: #b5b0a8;
+    --canal-blue: #3d6875;
+    --canal-dark: #1e3d47;
+    --water: #4a7d8e;
+    --white: #faf8f4;
+    --font: 'Montserrat', sans-serif;
+    --border-light: rgba(240,234,216,0.1);
+    --border-rust: rgba(46,139,87,0.4);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--black); color: var(--cream); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 60px;
+    background: rgba(13,13,13,0.96); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .nav-logo { font-size: 1rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+  .nav-logo span { color: var(--rust-bright); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-links a { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-cta { background: var(--rust) !important; color: var(--cream) !important; padding: 0.4rem 1rem; }
+  .nav-cta:hover { background: var(--rust-bright) !important; }
+
+  /* HERO */
+  .hero { position: relative; min-height: 56vh; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?w=1800&q=80');
+    background-size: cover; background-position: center 60%;
+    filter: brightness(0.3) contrast(1.15) saturate(0.6);
+  }
+  .hero-gradient { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,13,13,1) 0%, rgba(13,13,13,0.55) 45%, rgba(13,13,13,0.05) 100%); }
+  .hero-content { position: relative; z-index: 2; padding: 0 5rem 2.5rem; max-width: 980px; }
+  .hero-label { display: inline-flex; align-items: center; gap: 10px; font-size: 0.63rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rust-light); margin-bottom: 0.9rem; animation: fadeUp 0.6s 0.2s both; }
+  .hero-label::before { content: ''; display: block; width: 36px; height: 1px; background: var(--rust); }
+  .hero-title { font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; line-height: 0.88; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); margin-bottom: 1rem; animation: fadeUp 0.7s 0.35s both; }
+  .hero-title .accent { color: var(--rust-bright); display: block; }
+  .hero-desc { font-size: 0.93rem; font-weight: 300; line-height: 1.85; color: var(--mist); max-width: 660px; margin-bottom: 2rem; animation: fadeUp 0.7s 0.5s both; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.7s 0.62s both; }
+
+  .btn-rust { background: var(--rust); color: var(--white); padding: 0.9rem 2.25rem; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block; }
+  .btn-rust:hover { background: var(--rust-bright); transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid rgba(240,234,216,0.3); color: var(--cream); padding: 0.9rem 2.25rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s, background 0.2s; display: inline-block; }
+  .btn-ghost:hover { border-color: var(--cream); background: rgba(240,234,216,0.06); }
+
+  .hero-stats { position: absolute; right: 4rem; bottom: 2.5rem; z-index: 2; display: flex; flex-direction: column; gap: 1.5rem; }
+  .hstat { text-align: right; }
+  .hstat-num { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; color: var(--white); display: block; line-height: 1; }
+  .hstat-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--stone); display: block; margin-top: 3px; }
+  .hstat + .hstat { padding-top: 1.5rem; border-top: 1px solid var(--border-light); }
+
+  /* TICKER */
+  .ticker-wrap { background: var(--rust); padding: 0.65rem 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-block; animation: ticker 32s linear infinite; }
+  .ticker-inner span { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); margin: 0 2.5rem; }
+  .ticker-inner span::before { content: '◆'; margin-right: 2.5rem; opacity: 0.45; font-size: 0.45rem; vertical-align: middle; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* PHOTO STRIP */
+  .photo-strip { display: grid; grid-template-columns: repeat(4, 1fr); height: 270px; gap: 2px; }
+  .photo-panel { position: relative; overflow: hidden; cursor: pointer; }
+  .photo-panel img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.5) saturate(0.55) contrast(1.1); transition: filter 0.4s, transform 0.5s; display: block; }
+  .photo-panel:hover img { filter: brightness(0.65) saturate(0.75) contrast(1.05); transform: scale(1.04); }
+  .photo-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.7rem 1rem; background: linear-gradient(to top, rgba(13,13,13,0.85), transparent); font-size: 0.58rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+
+  /* SHARED */
+  .eyebrow { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rust-light); display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--rust); }
+  .section-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; letter-spacing: -0.035em; text-transform: uppercase; line-height: 0.92; color: var(--white); margin-bottom: 1rem; }
+  .section-title span { color: var(--rust-bright); }
+  .view-all { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust-light); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: gap 0.2s, color 0.2s; }
+  .view-all:hover { gap: 14px; color: var(--rust-bright); }
+
+  /* EVENTS */
+  .events-section { padding: 6rem 4rem; max-width: 1400px; margin: 0 auto; }
+  .events-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); }
+  .events-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 2px; background: var(--iron); border: 1px solid var(--iron); }
+  .event-card { background: var(--charcoal); padding: 2rem; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: background 0.2s; }
+  .event-card:hover { background: var(--steel); }
+  .event-card.featured { grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-end; min-height: 460px; position: relative; overflow: hidden; padding: 2.5rem; }
+  .event-img { position: absolute; inset: 0; background: linear-gradient(135deg, var(--canal-dark), var(--black)); }
+  .event-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.25) saturate(0.4); transition: filter 0.4s; display: block; }
+  .event-card.featured:hover .event-img img { filter: brightness(0.35) saturate(0.5); }
+  .event-card.featured > *:not(.event-img) { position: relative; z-index: 1; }
+  .event-tag { display: inline-block; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.25rem 0.6rem; margin-bottom: 1rem; border: 1px solid; }
+  .tag-music { border-color: var(--rust); color: var(--rust-light); }
+  .tag-art { border-color: var(--canal-blue); color: var(--water); }
+  .tag-market { border-color: #4a7820; color: #7ab030; }
+  .tag-history { border-color: var(--amber); color: var(--amber); }
+  .tag-community { border-color: var(--mist); color: var(--mist); }
+  .event-date { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); margin-bottom: 0.5rem; }
+  .featured .event-date { color: rgba(255,255,255,0.38); }
+  .event-title { font-size: 1rem; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; line-height: 1.15; margin-bottom: 0.5rem; color: var(--cream); }
+  .featured .event-title { font-size: 1.9rem; color: white; line-height: 1; }
+  .event-venue { font-size: 0.73rem; font-weight: 300; color: var(--stone); }
+  .featured .event-venue { color: rgba(255,255,255,0.4); }
+
+  /* HISTORY */
+  .history-section { padding: 7rem 4rem; position: relative; overflow: hidden; background: var(--charcoal); }
+  .history-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, var(--rust), var(--canal-blue), transparent); }
+  .history-inner { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: start; }
+  .history-intro { font-size: 0.88rem; font-weight: 300; line-height: 1.9; color: var(--mist); margin-top: 1.5rem; }
+  .history-intro p { margin-bottom: 1.25rem; }
+  .history-intro strong { color: var(--cream); font-weight: 600; }
+  .history-intro a { color: var(--rust-light); text-decoration: none; border-bottom: 1px solid rgba(181,66,10,0.35); transition: color 0.2s; }
+  .history-intro a:hover { color: var(--rust-bright); }
+  .history-timeline { padding-top: 0.25rem; }
+  .tl-item { display: grid; grid-template-columns: 90px 1fr; gap: 1.5rem; margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border-light); }
+  .tl-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .tl-year { font-size: 0.72rem; font-weight: 900; letter-spacing: 0.06em; color: var(--rust-bright); padding-top: 4px; border-top: 2px solid var(--rust); }
+  .tl-text { font-size: 0.82rem; font-weight: 300; line-height: 1.75; color: var(--mist); }
+  .tl-text strong { color: var(--cream); font-weight: 600; }
+  .tl-text a { color: var(--rust-light); text-decoration: none; }
+  .tl-text a:hover { color: var(--rust-bright); }
+
+  /* ORGS */
+  .orgs-section { background: var(--black); padding: 5rem 4rem; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+  .orgs-inner { max-width: 1400px; margin: 0 auto; }
+  .orgs-label { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1.5rem; }
+  .orgs-label::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+  .orgs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--iron); }
+  .org-card { background: var(--charcoal); padding: 2.25rem 2rem; text-decoration: none; color: inherit; transition: background 0.2s; display: block; border-left: 3px solid transparent; }
+  .org-card:hover { background: var(--steel); }
+  .org-card.c-rust { border-left-color: var(--rust); }
+  .org-card.c-blue { border-left-color: var(--canal-blue); }
+  .org-card.c-amber { border-left-color: var(--amber); }
+  .org-name { font-size: 0.78rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: var(--white); margin-bottom: 0.6rem; display: block; }
+  .org-desc { font-size: 0.78rem; font-weight: 300; line-height: 1.75; color: var(--stone); margin-bottom: 1rem; }
+  .org-link { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust-light); }
+
+  /* CANAL FULL */
+  .canal-full { height: 500px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .canal-full img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 50%; filter: brightness(0.32) saturate(0.45) contrast(1.15); }
+  .canal-full-text { position: relative; z-index: 2; text-align: center; padding: 2rem; }
+  .canal-quote { font-size: clamp(1.6rem, 4.5vw, 4rem); font-weight: 900; font-style: italic; letter-spacing: -0.03em; text-transform: uppercase; color: white; line-height: 1.05; max-width: 1000px; }
+  .canal-quote span { color: var(--rust-bright); }
+  .canal-attribution { margin-top: 1.5rem; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+
+  /* DIRECTORY */
+  .directory-section { padding: 6rem 4rem; max-width: 1400px; margin: 0 auto; }
+  .dir-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); }
+  .cat-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; background: var(--iron); border: 1px solid var(--iron); }
+  .cat-card { background: var(--charcoal); padding: 2rem 1.25rem; text-align: center; text-decoration: none; color: inherit; display: block; transition: background 0.2s; border-top: 3px solid transparent; }
+  .cat-card:hover { background: var(--steel); border-top-color: var(--rust); }
+  .cat-icon { font-size: 1.75rem; display: block; margin-bottom: 0.75rem; }
+  .cat-name { font-size: 0.67rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); display: block; margin-bottom: 0.3rem; }
+  .cat-count { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.08em; color: var(--stone); }
+
+  /* DIRECTORY LISTINGS */
+  .dir-group { margin-top: 3.5rem; }
+  .dir-group-title { font-size: 0.72rem; font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust-light); display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-light); }
+  .dir-group-title span { font-size: 1rem; }
+  .biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--iron); }
+  .biz-card { background: var(--charcoal); padding: 1.5rem; transition: background 0.2s; }
+  .biz-card:hover { background: var(--steel); }
+  .biz-name { font-size: 0.88rem; font-weight: 800; letter-spacing: 0.02em; color: var(--white); margin-bottom: 0.2rem; text-transform: uppercase; }
+  .biz-type { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust-light); margin-bottom: 0.2rem; }
+  .biz-address { font-size: 0.68rem; font-weight: 400; color: var(--stone); margin-bottom: 0.6rem; letter-spacing: 0.04em; }
+  .biz-desc { font-size: 0.78rem; font-weight: 300; line-height: 1.7; color: var(--mist); }
+  .biz-desc a { color: var(--rust-light); text-decoration: none; }
+  .biz-desc a:hover { color: var(--rust-bright); }
+  @media (max-width: 900px) { .biz-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .biz-grid { grid-template-columns: 1fr; } }
+  .instagram-section { padding: 6rem 4rem; max-width: 1400px; margin: 0 auto; }
+  .ig-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); }
+  .ig-handle { font-size: 0.75rem; font-weight: 300; color: var(--stone); margin-top: 0.3rem; }
+  .ig-embed-box { background: var(--charcoal); border: 1px solid var(--iron); padding: 3rem; text-align: center; }
+  .ig-embed-title { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); margin-bottom: 0.5rem; }
+  .ig-embed-sub { font-size: 0.75rem; font-weight: 300; color: var(--stone); margin-bottom: 2rem; }
+  .ig-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 2rem; }
+  .ig-ph { aspect-ratio: 1; background: var(--steel); opacity: 0.4; }
+  .ig-ph:nth-child(2) { opacity: 0.55; }
+  .ig-ph:nth-child(3) { opacity: 0.38; }
+  .ig-ph:nth-child(4) { opacity: 0.28; }
+  .ig-link { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust-light); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; }
+  .ig-link:hover { color: var(--rust-bright); }
+
+  /* CONTACT BAR */
+  .contact-bar { background: var(--rust); padding: 1.1rem 4rem; }
+  .contact-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-text { font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.9); letter-spacing: 0.02em; }
+  .contact-link { color: white; font-weight: 800; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 1px; transition: border-color 0.2s; }
+  .contact-link:hover { border-color: white; }
+  .contact-email { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+  .contact-email:hover { color: white; }
+
+  /* NEWSLETTER */
+  .newsletter-section { background: var(--charcoal); border-top: 3px solid var(--rust); padding: 7rem 4rem; }
+  .nl-inner { max-width: 660px; margin: 0 auto; text-align: center; }
+  .nl-title { font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.9; color: var(--white); margin-bottom: 1.25rem; }
+  .nl-title span { color: var(--rust-bright); display: block; }
+  .nl-desc { font-size: 0.87rem; font-weight: 300; line-height: 1.8; color: var(--stone); margin-bottom: 2.5rem; }
+  .btn-substack { display: inline-flex; align-items: center; gap: 12px; background: var(--rust); color: white; padding: 1rem 2.5rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+  .btn-substack:hover { background: var(--rust-bright); transform: translateY(-2px); }
+  .substack-icon { width: 22px; height: 22px; background: white; color: var(--rust); border-radius: 50%; font-size: 0.75rem; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-style: normal; }
+  .nl-fine { margin-top: 1rem; font-size: 0.65rem; font-weight: 400; letter-spacing: 0.08em; color: var(--iron); }
+
+  /* FOOTER */
+  footer { background: var(--black); padding: 5rem 4rem 2.5rem; border-top: 1px solid var(--border-light); }
+  .footer-inner { max-width: 1400px; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border-light); }
+  .footer-logo { font-size: 1.1rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); text-decoration: none; display: block; margin-bottom: 1.25rem; }
+  .footer-logo span { color: var(--rust-bright); }
+  .footer-tagline { font-size: 0.8rem; font-weight: 300; line-height: 1.8; color: var(--stone); max-width: 280px; margin-bottom: 1.5rem; }
+  .footer-org-links { display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-org-links a { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em; color: var(--stone); text-decoration: none; transition: color 0.2s; }
+  .footer-org-links a:hover { color: var(--rust-light); }
+  .footer-col-title { font-size: 0.58rem; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; }
+  .footer-col-title::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.7rem; }
+  .footer-links a { font-size: 0.77rem; font-weight: 300; color: var(--stone); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--iron); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .cat-grid { grid-template-columns: repeat(4, 1fr); }
+    .events-grid { grid-template-columns: 1fr 1fr; }
+    .event-card.featured { grid-row: span 1; min-height: 300px; }
+    .history-inner { grid-template-columns: 1fr; gap: 4rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .orgs-grid { grid-template-columns: 1fr; }
+    .photo-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
+    .photo-panel { height: 200px; }
+    .hero-stats { display: none; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 1.5rem 3rem; }
+    .events-section, .directory-section, .instagram-section { padding: 4rem 1.5rem; }
+    .history-section, .orgs-section, .newsletter-section, footer { padding: 4rem 1.5rem; }
+    .contact-bar { padding: 1rem 1.5rem; }
+    .contact-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .events-grid, .cat-grid { grid-template-columns: 1fr; }
+    .ig-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Gowanus<span>Locals</span></a>
+  <ul class="nav-links">
+    <li><a href="#events">Events</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#directory">Directory</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#" class="nav-cta">Submit listing</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <span class="hero-label">Gowanus, Brooklyn, NY</span>
+    <h1 class="hero-title">Industrial.<br><span class="accent">Creative.</span>Superfun.</h1>
+    <p class="hero-desc">From the canal banks and music venues, to the art studios and dive bars, to the restaurants, bakeries and quirky shops — here's just about everything about Gowanus, Brooklyn — including how you can support the artists, musicians and small businesses that have been here for years, in a changing neighborhood. Made by locals, for locals.</p>
+    <div class="hero-actions">
+      <a href="#events" class="btn-rust">What's on this week</a>
+      <a href="#history" class="btn-ghost">The neighborhood story</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>Bell House this Friday</span><span>Gowanus Open Studios – May 17</span><span>Canal Conservancy cleanup day</span><span>New murals on 3rd Ave</span><span>Farmer's market Saturdays</span><span>Powerhouse Arts open call</span><span>EPA Superfund update</span><span>Carroll St Bridge — oldest retractile bridge in the US</span><span>Bell House this Friday</span><span>Gowanus Open Studios – May 17</span><span>Canal Conservancy cleanup day</span><span>New murals on 3rd Ave</span><span>Farmer's market Saturdays</span><span>Powerhouse Arts open call</span><span>EPA Superfund update</span><span>Carroll St Bridge — oldest retractile bridge in the US</span>
+  </div>
+</div>
+
+
+
+<!-- EVENTS -->
+<section class="events-section" id="events">
+  <div class="events-header">
+    <div>
+      <div class="eyebrow">What's on</div>
+      <h2 class="section-title">Upcoming <span>Events</span></h2>
+    </div>
+    <a href="#" class="view-all">Full calendar →</a>
+  </div>
+  <div class="events-grid">
+    <a href="#" class="event-card featured">
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=70" alt="Live music"></div>
+      <span class="event-tag tag-music">Music</span>
+      <p class="event-date">Fri, May 2 · 8pm · The Bell House</p>
+      <h3 class="event-title">Gowanus Jazz Night Vol. 12</h3>
+      <p class="event-venue">473 DeGraw St · $15 at the door</p>
+    </a>
+    <a href="#" class="event-card">
+      <span class="event-tag tag-art">Art</span>
+      <p class="event-date">Sat, May 3 · 6–9pm</p>
+      <h3 class="event-title">Canal Works Gallery Opening</h3>
+      <p class="event-venue">Studio 231, 3rd Ave</p>
+    </a>
+    <a href="#" class="event-card">
+      <span class="event-tag tag-market">Market</span>
+      <p class="event-date">Sun, May 4 · 10am–3pm</p>
+      <h3 class="event-title">Gowanus Sunday Market</h3>
+      <p class="event-venue">2nd St & Smith</p>
+    </a>
+    <a href="#" class="event-card">
+      <span class="event-tag tag-history">History</span>
+      <p class="event-date">Thu, May 8 · 7pm · Free</p>
+      <h3 class="event-title">Canal Walking Tour</h3>
+      <p class="event-venue">Meet at Carroll St Bridge</p>
+    </a>
+    <a href="#" class="event-card">
+      <span class="event-tag tag-community">Community</span>
+      <p class="event-date">Sat, May 10 · 10am · Free</p>
+      <h3 class="event-title">GCC Canal Cleanup Day</h3>
+      <p class="event-venue">Gowanus Canal Conservancy</p>
+    </a>
+  </div>
+</section>
+
+<!-- HISTORY -->
+<section class="history-section" id="history">
+  <div class="history-accent-line"></div>
+  <div class="history-inner">
+    <div>
+      <div class="eyebrow">Roots & Ruins</div>
+      <h2 class="section-title">A Brief <span>History</span> of Gowanus</h2>
+      <div class="history-intro">
+        <p>In <strong>1636</strong>, Gowanus Bay — named after Gauwane, a Canarsee Indian leader — was the site of the first Dutch settlement in what is now Brooklyn. Early settlers harnessed the tidal creek to power their gristmills.</p>
+        <p>During the <strong>American Revolutionary War</strong>, Gowanus was the site of the Battle of Brooklyn — one of the largest engagements of the entire war. There's even a playground nearby commemorating the battle.</p>
+        <p>By the <strong>1860s</strong>, the creek had been dug into a full canal. Factories, oil refineries, and gas works flooded the banks — as did their waste, pumped directly into the water through combined sewers.</p>
+        <p>In the <strong>1980s</strong>, the derelict 230 3rd Street — an old 19th-century munitions factory — became the massive <strong>Gowanus Memorial Artyard</strong>, one of the largest art installations of its era. The <strong>Coignet Stone Building</strong> next door (one of America's earliest concrete structures) still stands today.</p>
+        <p>Artists kept coming. By the 1990s, Gowanus had quietly become one of Brooklyn's most vital creative communities — built from the ruins of industry, and the affordable spaces those ruins left behind.</p>
+        <a href="https://gowanuslocal.substack.com/p/a-brief-history-of-gowanus" target="_blank" rel="noopener" class="btn-ghost" style="margin-top:1.75rem;display:inline-block;font-size:0.68rem;">Read the full history on Substack →</a>
+      </div>
+    </div>
+    <div class="history-timeline">
+      <div class="tl-item">
+        <div class="tl-year">1636</div>
+        <p class="tl-text">Dutch farmers settle <strong>Gowanus Bay</strong>. Named for Gauwane, a Canarsee Indian leader. The tidal creek powers the first gristmills in Brooklyn.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1776</div>
+        <p class="tl-text">The <strong>Battle of Brooklyn</strong> is fought across Gowanus — the largest battle of the Revolutionary War. The neighborhood is still marked by it.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1860s</div>
+        <p class="tl-text">The creek is engineered into a <strong>full industrial canal</strong>. Factories, gas works, and oil refineries move in. Combined sewers dump directly into the water.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1889</div>
+        <p class="tl-text">The <strong>Carroll Street Bridge</strong> is built — the oldest retractile bridge in the United States. It still operates today, by hand, using the original mechanism.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1940s</div>
+        <p class="tl-text">Post-WWII decline sets in. <strong>NYCHA housing</strong> is built to house returning veterans. Industry begins to leave the canal behind.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1980s–90s</div>
+        <p class="tl-text">The <strong>Gowanus Memorial Artyard</strong> opens at 230 3rd St. Artists move into cheap warehouse lofts. The creative community that defines Gowanus today quietly takes root.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2010</div>
+        <p class="tl-text">The EPA designates the canal a <strong>Superfund site</strong>. Cleanup begins in 2020. The <a href="https://gowanuscanalconservancy.org/superfund/" target="_blank">Gowanus Canal Conservancy</a> tracks every step and advocates hard for the community.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2012</div>
+        <p class="tl-text"><strong>Powerhouse Arts</strong> buys "The Bat Cave" — a derelict BRT power station. It opens in 2022 as a world-class arts fabrication nonprofit.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2021</div>
+        <p class="tl-text">An <strong>82-block rezoning</strong> is approved, triggering the largest wave of development Gowanus has ever seen. The <a href="https://gowanusimprovementdistrict.org/" target="_blank">Gowanus Improvement District</a> forms to keep the neighborhood's soul intact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY ORGS -->
+<section class="orgs-section" id="community">
+  <div class="orgs-inner">
+    <div class="orgs-label">Know your neighbors — community organizations doing the work</div>
+    <div class="orgs-grid">
+      <a href="https://gowanuscanalconservancy.org/" target="_blank" rel="noopener" class="org-card c-rust">
+        <span class="org-name">Gowanus Canal Conservancy</span>
+        <p class="org-desc">Works with agencies, elected officials, and the community to advocate for and maintain innovative green infrastructure around the canal. Tracking the Superfund cleanup, running habitat restoration programs, and operating community science education. Based at 248 Third Street.</p>
+        <span class="org-link">gowanuscanalconservancy.org →</span>
+      </a>
+      <a href="https://www.voiceofgowanus.org/" target="_blank" rel="noopener" class="org-card c-blue">
+        <span class="org-name">Voice of Gowanus</span>
+        <p class="org-desc">A grassroots org demanding transparency and accountability from state and federal agencies on the cleanup of historic pollution — not just for current residents but for the thousands of new neighbors on the way. Runs a community health survey and documents toxic exposure risks.</p>
+        <span class="org-link">voiceofgowanus.org →</span>
+      </a>
+      <a href="https://gowanusimprovementdistrict.org/" target="_blank" rel="noopener" class="org-card c-amber">
+        <span class="org-name">Gowanus Improvement District</span>
+        <p class="org-desc">A community-led effort to create a Business Improvement District focused on the public realm — waterfront esplanades, parks, and streets. Committed to ensuring that the wave of new development supports local businesses, accessible open spaces, and a resilient, vibrant neighborhood.</p>
+        <span class="org-link">gowanusimprovementdistrict.org →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CANAL FULL-WIDTH -->
+<div class="canal-full">
+  <img src="https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?w=1800&q=75" alt="The Gowanus Canal">
+  <div class="canal-full-text">
+    <p class="canal-quote">"Polluted and alive,<br>forgotten and <span>fiercely beloved.</span>"</p>
+    <p class="canal-attribution">Gowanus, Brooklyn</p>
+  </div>
+</div>
+
+<!-- DIRECTORY -->
+<section class="directory-section" id="directory">
+  <div class="dir-header">
+    <div>
+      <div class="eyebrow">Find it local</div>
+      <h2 class="section-title">The Local <span>Directory</span></h2>
+    </div>
+    <a href="#" class="view-all">Browse all listings →</a>
+  </div>
+    <div class="cat-grid">
+    <a href="#dir-food" class="cat-card"><span class="cat-icon">🍕</span><span class="cat-name">Food & Drink</span></a>
+    <a href="#dir-drinks" class="cat-card"><span class="cat-icon">🍺</span><span class="cat-name">Bars & Breweries</span></a>
+    <a href="#dir-shops" class="cat-card"><span class="cat-icon">🛍️</span><span class="cat-name">Shops & Retail</span></a>
+    <a href="#dir-wellness" class="cat-card"><span class="cat-icon">🌿</span><span class="cat-name">Wellness & Fitness</span></a>
+    <a href="#dir-arts" class="cat-card"><span class="cat-icon">🎭</span><span class="cat-name">Arts & Studios</span></a>
+    <a href="#dir-music" class="cat-card"><span class="cat-icon">🎵</span><span class="cat-name">Music & Venues</span></a>
+    <a href="#dir-kids" class="cat-card"><span class="cat-icon">🧒</span><span class="cat-name">For Kids</span></a>
+  </div>
+
+  <!-- FOOD & DRINK -->
+  <div class="dir-group" id="dir-food">
+    <h3 class="dir-group-title"><span>🍕</span> Food & Drink</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">7 9th Street Luncheonette</p><p class="biz-type">Diner</p><p class="biz-address">9th St</p><p class="biz-desc">Cash-only neighborhood diner. Ask Annette for the Hungry Man breakfast special with french toast on a Saturday morning.</p></div>
+      <div class="biz-card"><p class="biz-name">Abbotsford Road Coffee</p><p class="biz-type">Coffee Roaster · Café</p><p class="biz-address">Gowanus</p><p class="biz-desc">Kosher coffee roaster and café with excellent pastries. Still roasting in-house. Mon–Sat 9–2.</p></div>
+      <div class="biz-card"><p class="biz-name">Amigo's Deli Grocery</p><p class="biz-type">Deli · Grocery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood deli and grocery. A local staple for quick bites and essentials.</p></div>
+      <div class="biz-card"><p class="biz-name">Ample Hills Creamery</p><p class="biz-type">Ice Cream</p><p class="biz-address">Gowanus</p><p class="biz-desc">Beloved local ice cream shop with inventive flavors. A neighborhood institution.</p></div>
+      <div class="biz-card"><p class="biz-name">Baba's Pierogies</p><p class="biz-type">Restaurant</p><p class="biz-address">295 3rd Ave</p><p class="biz-desc">Bright, modern pierogi spot with rotating fillings — potato &amp; cheese, spinach &amp; feta, short rib. Open 11:30am–9pm.</p></div>
+      <div class="biz-card"><p class="biz-name">Back to John's Deli</p><p class="biz-type">Deli</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood deli with delivery and pickup. A local quick-stop staple.</p></div>
+      <div class="biz-card"><p class="biz-name">Beanmonger Coffee</p><p class="biz-type">Coffee Shop</p><p class="biz-address">620 Union St</p><p class="biz-desc">Neighborhood coffee shop on Union Street serving the Gowanus community.</p></div>
+      <div class="biz-card"><p class="biz-name">Bearded Baker</p><p class="biz-type">Bakery</p><p class="biz-address">8 Saint Marks Place</p><p class="biz-desc">Artisan bakery bringing fresh-baked goods to the neighborhood. Pastries, breads, and more.</p></div>
+      <div class="biz-card"><p class="biz-name">Black Mountain Wine House</p><p class="biz-type">Wine Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Cozy wine bar with a great selection and intimate atmosphere. Takeout and delivery available.</p></div>
+      <div class="biz-card"><p class="biz-name">Boran Thai Restaurant</p><p class="biz-type">Thai Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Solid neighborhood Thai spot. Order via Beyond Menu for delivery.</p></div>
+      <div class="biz-card"><p class="biz-name">Burrito Spot</p><p class="biz-type">Mexican</p><p class="biz-address">Gowanus</p><p class="biz-desc">Quick, solid burritos for delivery or pickup. A neighborhood go-to for Mexican food.</p></div>
+      <div class="biz-card"><p class="biz-name">Café Mars</p><p class="biz-type">Café · Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">A neighborhood café and wine bar with a relaxed, artsy vibe. Great for a coffee during the day or a glass of wine at night.</p></div>
+      <div class="biz-card"><p class="biz-name">Claro</p><p class="biz-type">Mexican Restaurant ★ Michelin</p><p class="biz-address">284 3rd Ave</p><p class="biz-desc">The first Gowanus restaurant to earn a Michelin Guide star. Stunning Oaxacan-inspired cuisine and mezcal. Reservations strongly recommended.</p></div>
+      <div class="biz-card"><p class="biz-name">Cotta Bene</p><p class="biz-type">Italian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Italian with chefs Paul D'Avino and Jorge Olarte. Quirky, delicious, and worth reserving.</p></div>
+      <div class="biz-card"><p class="biz-name">Daigo Sushi Roll Bar</p><p class="biz-type">Sushi</p><p class="biz-address">527 Carroll St</p><p class="biz-desc">Neighborhood sushi spot on Carroll Street. Fresh rolls and Japanese fare.</p></div>
+      <div class="biz-card"><p class="biz-name">El Mexicano</p><p class="biz-type">Mexican Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Mexican spot. Delivery via Seamless.</p></div>
+      <div class="biz-card"><p class="biz-name">Evalyn's Tap House</p><p class="biz-type">Bar · Taphouse</p><p class="biz-address">236 Butler St</p><p class="biz-desc">Neighborhood taphouse on Butler Street with a solid beer selection and a welcoming local crowd.</p></div>
+      <div class="biz-card"><p class="biz-name">Everybody Eats</p><p class="biz-type">Vegan Bakery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Vegan, gluten-free, preservative-free handmade baked goods. The babka muffins are legendary. Get there early — items sell out.</p></div>
+      <div class="biz-card"><p class="biz-name">Finback Brooklyn</p><p class="biz-type">Brewery</p><p class="biz-address">545 President St</p><p class="biz-desc">Highly regarded craft brewery with a Gowanus taproom. Beer to go daily until 7pm.</p></div>
+      <div class="biz-card"><p class="biz-name">Fletchers BBQ</p><p class="biz-type">BBQ Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Solid neighborhood BBQ. Sun–Thu 11am–9pm, Fri–Sat 11am–10pm. Pickup and takeout focused.</p></div>
+      <div class="biz-card"><p class="biz-name">Four &amp; Twenty Blackbirds</p><p class="biz-type">Pie Shop · Café</p><p class="biz-address">Gowanus</p><p class="biz-desc">Acclaimed pie shop and café. Seasonal, inventive pies baked in-house. Available in-store, online, Caviar, and Grubhub.</p></div>
+      <div class="biz-card"><p class="biz-name">Ghenet</p><p class="biz-type">Ethiopian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Ethiopian restaurant with rich stews and injera. Delivery via Seamless and Grubhub.</p></div>
+      <div class="biz-card"><p class="biz-name">Giardini Pizzeria</p><p class="biz-type">Pizza</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood pizzeria. Delivery via Seamless.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Convenience</p><p class="biz-type">Convenience Store</p><p class="biz-address">4th Ave &amp; 7th St</p><p class="biz-desc">Neighborhood convenience store serving the community.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Gardens</p><p class="biz-type">Café · Garden</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community café and garden space. Best place in the neighborhood for tea and occasional live performers. Follow @gowanusgardens.</p></div>
+      <div class="biz-card"><p class="biz-name">Guacamole Mexican Grille</p><p class="biz-type">Mexican Restaurant</p><p class="biz-address">250 4th Ave</p><p class="biz-desc">Neighborhood Mexican restaurant on 4th Avenue with fresh guacamole, tacos, and burritos.</p></div>
+      <div class="biz-card"><p class="biz-name">Guero's Brooklyn</p><p class="biz-type">Mexican Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Beloved neighborhood Mexican spot. Open for delivery Thurs–Sun.</p></div>
+      <div class="biz-card"><p class="biz-name">Halyards</p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">406 3rd Ave</p><p class="biz-desc">Canal-side bar with a massive outdoor dock and legendary slushy margaritas. One of the best spots in Gowanus to watch the sun go down.</p></div>
+      <div class="biz-card"><p class="biz-name">Hemo's Spot Juice Bar &amp; Cafe</p><p class="biz-type">Juice Bar · Café</p><p class="biz-address">253 3rd Ave</p><p class="biz-desc">Fresh juices, smoothies, and café fare on 3rd Ave. A healthy neighborhood option.</p></div>
+      <div class="biz-card"><p class="biz-name">Insa</p><p class="biz-type">Korean BBQ · Bar</p><p class="biz-address">328 Douglass St</p><p class="biz-desc">Korean BBQ with tabletop grills and private karaoke rooms. A wildly popular birthday party destination. Delivery via Grubhub, Caviar, DoorDash.</p></div>
+      <div class="biz-card"><p class="biz-name">Jasim Gyros</p><p class="biz-type">Mediterranean</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood gyro spot. Delivery via Grubhub and Seamless.</p></div>
+      <div class="biz-card"><p class="biz-name">Kanan Indian Restaurant</p><p class="biz-type">Indian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Indian restaurant. Call directly to order and cut out middleman costs.</p></div>
+      <div class="biz-card"><p class="biz-name">La Parada Express</p><p class="biz-type">Latin Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Latin spot with takeout and delivery.</p></div>
+      <div class="biz-card"><p class="biz-name">Lavender Lake</p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">383 Carroll St</p><p class="biz-desc">Named for the canal's infamous hue. Relaxed bar and restaurant with a beautiful outdoor garden. Welcoming to families and everyone else.</p></div>
+      <div class="biz-card"><p class="biz-name">Line Bagels</p><p class="biz-type">Bagels</p><p class="biz-address">Gowanus</p><p class="biz-desc">Fresh bagels Mon–Sun 5am–5pm. Call for delivery. A no-fuss neighborhood essential.</p></div>
+      <div class="biz-card"><p class="biz-name">Little Neck</p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood bar and restaurant with a loyal local following. Fri 3–8pm, Sat/Sun 12–7pm.</p></div>
+      <div class="biz-card"><p class="biz-name">Loafers Cocktail Bar</p><p class="biz-type">Cocktail Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Low-key neighborhood cocktail bar with a carefully curated drinks menu and a welcoming, no-fuss vibe.</p></div>
+      <div class="biz-card"><p class="biz-name">Lowlands</p><p class="biz-type">Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Cozy neighborhood bar with a warm, lived-in feel and regular local crowd.</p></div>
+      <div class="biz-card"><p class="biz-name">Lucey's Lounge</p><p class="biz-type">Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood bar with large-batch cocktails and a front window pickup setup. Follow @luceyslounge.</p></div>
+      <div class="biz-card"><p class="biz-name">Lucky 13 Saloon</p><p class="biz-type">Dive Bar</p><p class="biz-address">644 Sackett St</p><p class="biz-desc">A true Gowanus dive bar with a loyal following, cold beer, and neighborhood energy on Sackett Street.</p></div>
+      <div class="biz-card"><p class="biz-name">Michael &amp; Pings</p><p class="biz-type">Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood restaurant. Gift cards available.</p></div>
+      <div class="biz-card"><p class="biz-name">Mirror Tea &amp; Sake House</p><p class="biz-type">Tea House · Sake Bar</p><p class="biz-address">575 Union St</p><p class="biz-desc">The best place in Gowanus for tea. Occasional live performers, beautiful space, and a sake selection to boot.</p></div>
+      <div class="biz-card"><p class="biz-name">Mission Dolores</p><p class="biz-type">Bar</p><p class="biz-address">249 4th Ave</p><p class="biz-desc">Large outdoor bar-garden loved for its beer selection and laid-back vibe. A great warm-weather destination.</p></div>
+      <div class="biz-card"><p class="biz-name">Monte's</p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">451 Carroll St</p><p class="biz-desc">Longtime neighborhood Italian-American institution on Carroll St. One of Gowanus' most storied establishments.</p></div>
+      <div class="biz-card"><p class="biz-name">My Cuban Spot</p><p class="biz-type">Cuban Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Cuban spot. Order via ChowNow.</p></div>
+      <div class="biz-card"><p class="biz-name">Ninth Street Espresso</p><p class="biz-type">Coffee Shop</p><p class="biz-address">9th St</p><p class="biz-desc">Acclaimed specialty espresso bar with a minimalist ethos and serious coffee. A neighborhood morning ritual.</p></div>
+      <div class="biz-card"><p class="biz-name">Number One Deli</p><p class="biz-type">Deli</p><p class="biz-address">Gowanus</p><p class="biz-desc">Classic neighborhood deli. A quick, reliable local staple.</p></div>
+      <div class="biz-card"><p class="biz-name">Oaxaca Taqueria</p><p class="biz-type">Taqueria</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood taqueria with a loyal following. Available across all major delivery platforms.</p></div>
+      <div class="biz-card"><p class="biz-name">Palo Santo</p><p class="biz-type">Restaurant</p><p class="biz-address">652 Union St</p><p class="biz-desc">Latin American-inspired farm-to-table restaurant with a beautiful backyard garden. One of Gowanus' most acclaimed dining destinations.</p></div>
+      <div class="biz-card"><p class="biz-name">Parklife / Littlefield</p><p class="biz-type">Bar · Event Space</p><p class="biz-address">636 Degraw St</p><p class="biz-desc">Hybrid indoor/outdoor bar and event space hosting movie nights, pop-up markets, and live events. A Gowanus staple for gatherings.</p></div>
+      <div class="biz-card"><p class="biz-name">Pig Beach Brooklyn</p><p class="biz-type">BBQ · Beer Garden</p><p class="biz-address">480 Union St</p><p class="biz-desc">Massive BBQ and beer garden on the water — ribs, brisket, and cold beer in a huge outdoor space. A Gowanus summer essential.</p></div>
+      <div class="biz-card"><p class="biz-name">Pizza Bruno</p><p class="biz-type">Pizza</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood pizza spot. Order via ChowNow.</p></div>
+      <div class="biz-card"><p class="biz-name">Principals GI Coffee House</p><p class="biz-type">Coffee Shop</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood coffee house serving the Gowanus community with great coffee and a welcoming atmosphere.</p></div>
+      <div class="biz-card"><p class="biz-name">Public Records</p><p class="biz-type">Bar · Restaurant · Music</p><p class="biz-address">233 Butler St</p><p class="biz-desc">Gowanus' trendiest bar, restaurant, record shop, and magazine stand. Vinyl-first sound system, DJ nights, great food and cocktails.</p></div>
+      <div class="biz-card"><p class="biz-name">Purslane</p><p class="biz-type">Restaurant</p><p class="biz-address">233 Butler St</p><p class="biz-desc">Neighborhood restaurant on Butler Street. Thoughtful, seasonal cooking in a Gowanus setting.</p></div>
+      <div class="biz-card"><p class="biz-name">Rice &amp; Beans</p><p class="biz-type">Latin Restaurant</p><p class="biz-address">234 4th Ave</p><p class="biz-desc">Neighborhood Latin spot on 4th Ave serving classic rice and beans and everyday comfort food.</p></div>
+      <div class="biz-card"><p class="biz-name">Root Hill Cafe</p><p class="biz-type">Café</p><p class="biz-address">Gowanus</p><p class="biz-desc">Beloved neighborhood café. Mon–Sun 8–4. A local morning institution.</p></div>
+      <div class="biz-card"><p class="biz-name">Rucola</p><p class="biz-type">Italian Restaurant</p><p class="biz-address">190 Dean St</p><p class="biz-desc">Warm, intimate Italian restaurant with a seasonal menu and one of the best pasta dishes in Brooklyn.</p></div>
+      <div class="biz-card"><p class="biz-name">Runner &amp; Stone</p><p class="biz-type">Bakery · Café · Restaurant</p><p class="biz-address">285 3rd Ave</p><p class="biz-desc">Beloved neighborhood bakery and restaurant. All bread and pastries baked in-house using local whole grain flours. Best baguette in Brooklyn.</p></div>
+      <div class="biz-card"><p class="biz-name">San Art Framing &amp; Supply</p><p class="biz-type">Art Supplies · Framing</p><p class="biz-address">254 3rd Ave</p><p class="biz-desc">Neighborhood art supply and framing shop on 3rd Ave. A go-to resource for the Gowanus artist community.</p></div>
+      <div class="biz-card"><p class="biz-name">Sixteen Mill</p><p class="biz-type">Vegan & GF Bakery</p><p class="biz-address">552 Union St</p><p class="biz-desc">Instagram-famous vegan, gluten-free, and refined-sugar-free bakery with its first standalone Gowanus location. Known for pound cakes (matcha lemon, hojicha chocolate), hazelnut-chia cake donuts with chocolate ganache, challah, cookies and scones. Celiac-safe kitchen. Wed–Fri 10–5, Sat–Sun 9–4. @sixteen.mill</p></div>
+      <div class="biz-card"><p class="biz-name">Smith &amp; 9th St Deli &amp; Grocery</p><p class="biz-type">Deli · Grocery</p><p class="biz-address">Smith &amp; 9th St</p><p class="biz-desc">Neighborhood deli and grocery at the Smith &amp; 9th corner. A community staple.</p></div>
+      <div class="biz-card"><p class="biz-name">Still Life</p><p class="biz-type">Bar · Natural Wine</p><p class="biz-address">Gowanus</p><p class="biz-desc">Natural wine bar with a carefully curated list and laid-back neighborhood feel. A great spot for a quiet glass.</p></div>
+      <div class="biz-card"><p class="biz-name">Surfish Bistro</p><p class="biz-type">Seafood Bistro</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood seafood bistro with delivery and takeout.</p></div>
+      <div class="biz-card"><p class="biz-name">Sweet Talk</p><p class="biz-type">Restaurant</p><p class="biz-address">457 3rd Ave</p><p class="biz-desc">Neighborhood restaurant on 3rd Ave. Order via Seamless.</p></div>
+      <div class="biz-card"><p class="biz-name">Table 87</p><p class="biz-type">Coal Oven Pizza</p><p class="biz-address">473 Union St</p><p class="biz-desc">Shark Tank-famous coal oven pizza. Fresh, crispy, and wildly popular. They'll even ship a flash-frozen slice anywhere in the country.</p></div>
+      <div class="biz-card"><p class="biz-name">Taheni Mediterranean Grill</p><p class="biz-type">Mediterranean</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Mediterranean grill with delivery via Grubhub. Follow @tahenimg.</p></div>
+      <div class="biz-card"><p class="biz-name">Threes Brewing</p><p class="biz-type">Brewery · Restaurant</p><p class="biz-address">333 Douglass St</p><p class="biz-desc">Popular craft brewery and restaurant with a great taproom and rotating beer menu. One of Gowanus' anchor spots.</p></div>
+      <div class="biz-card"><p class="biz-name">Tikka Indian Grill</p><p class="biz-type">Indian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Indian grill with online ordering and delivery/takeout.</p></div>
+      <div class="biz-card"><p class="biz-name">Ugly Baby</p><p class="biz-type">Thai Restaurant</p><p class="biz-address">407 Smith St</p><p class="biz-desc">Acclaimed Thai restaurant with bold, funky flavors and a cult local following. One of the most exciting restaurants in the neighborhood.</p></div>
+      <div class="biz-card"><p class="biz-name">Union Cafe</p><p class="biz-type">Café</p><p class="biz-address">251 3rd Ave</p><p class="biz-desc">Neighborhood café on 3rd Avenue — a cozy local spot for coffee and light bites.</p></div>
+      <div class="biz-card"><p class="biz-name">Union Street Cafe</p><p class="biz-type">Café</p><p class="biz-address">Union St</p><p class="biz-desc">Neighborhood café on Union Street. A local gathering spot.</p></div>
+      <div class="biz-card"><p class="biz-name">Valentino's Pizza Brooklyn</p><p class="biz-type">Pizza</p><p class="biz-address">291 3rd Ave</p><p class="biz-desc">Neighborhood pizzeria on 3rd Ave. Classic Brooklyn pizza done right.</p></div>
+      <div class="biz-card"><p class="biz-name">Velvette Brew</p><p class="biz-type">Coffee Shop</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood coffee shop with takeout. Gift cards available. Follow @velvettebrews.</p></div>
+      <div class="biz-card"><p class="biz-name">Villa Mia Pizza</p><p class="biz-type">Pizza</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood pizzeria with online ordering.</p></div>
+      <div class="biz-card"><p class="biz-name">Wild East Brewing</p><p class="biz-type">Brewery · Taproom</p><p class="biz-address">549 3rd Ave</p><p class="biz-desc">European brewing techniques, modern American craft beer. Outdoor courtyard, outside food welcome. Try the Apricity sour.</p></div>
+    </div>
+  </div>
+
+  <!-- BARS & BREWERIES -->
+  <div class="dir-group" id="dir-drinks">
+    <h3 class="dir-group-title"><span>🍺</span> Bars &amp; Breweries</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">Black Cat Wines</p><p class="biz-type">Wine Bar · Shop</p><p class="biz-address">252 4th Ave</p><p class="biz-desc">Neighborhood wine bar and shop on 4th Ave with a well-curated selection and a cozy, inviting atmosphere.</p></div>
+      <div class="biz-card"><p class="biz-name">Bond Street Wine</p><p class="biz-type">Wine Shop</p><p class="biz-address">363 Bond St</p><p class="biz-desc">Neighborhood wine shop offering pickup and delivery. A solid local alternative to the big chains.</p></div>
+      <div class="biz-card"><p class="biz-name">Bond Street Coffee &amp; Goods</p><p class="biz-type">Café</p><p class="biz-address">365 Bond St</p><p class="biz-desc">Neighborhood café on Bond Street. Order in store or online via ChowNow.</p></div>
+      <div class="biz-card"><p class="biz-name">Breukelen Distilling</p><p class="biz-type">Distillery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Gowanus-based craft distillery. Available via Drizzy and MiniBar for delivery.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Barrel</p><p class="biz-type">Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Local bar with a good selection and neighborhood regulars.</p></div>
+      <div class="biz-card"><p class="biz-name">Canal Bar</p><p class="biz-type">Bar</p><p class="biz-address">270 3rd Ave</p><p class="biz-desc">Classic Gowanus bar with a rear yard and real neighborhood energy. Check @canalbarbklyn on Instagram for current hours.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Wine Merchants</p><p class="biz-type">Wine Shop</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood wine shop with knowledgeable staff and a strong local following. Online store available.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Wine Studio &amp; Tasting Table</p><p class="biz-type">Wine Studio · Tasting</p><p class="biz-address">Gowanus</p><p class="biz-desc">Intimate wine studio and tasting table experience in Gowanus. A unique spot to explore wine with a knowledgeable guide.</p></div>
+      <div class="biz-card"><p class="biz-name">Other Half Brewing</p><p class="biz-type">Brewery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Hugely popular NYC craft brewery with a Gowanus taproom. Hop-forward IPAs and hazy beers. To-go sales and merch.</p></div>
+      <div class="biz-card"><p class="biz-name">Strong Rope Brewery</p><p class="biz-type">Brewery</p><p class="biz-address">574 President St</p><p class="biz-desc">Small-batch, ingredient-focused craft brewery. To-go crowlers, ciders, and merch. Follow @strongropebrewery.</p></div>
+    </div>
+  </div>
+
+  <!-- SHOPS & RETAIL -->
+  <div class="dir-group" id="dir-shops">
+    <h3 class="dir-group-title"><span>🛍️</span> Shops &amp; Retail</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">Bead on Bond</p><p class="biz-type">Jewelry · Craft</p><p class="biz-address">Bond St</p><p class="biz-desc">Jewelry and bead shop on Bond Street. Gift cards and online store at beadonbond.com/shop.</p></div>
+      <div class="biz-card"><p class="biz-name">From Here to Sunday</p><p class="biz-type">Lifestyle Boutique</p><p class="biz-address">Gowanus</p><p class="biz-desc">Curated lifestyle boutique with gift cards and free US shipping on online orders. Follow @heretosunday.</p></div>
+      <div class="biz-card"><p class="biz-name">GoodBuy Gear NYC</p><p class="biz-type">Kids Resale · Gear</p><p class="biz-address">244 Butler St</p><p class="biz-desc">Resale shop for quality kids gear — strollers, car seats, clothes, and toys. Buy and sell secondhand. A neighborhood gem for families.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Audio &amp; Furniture</p><p class="biz-type">Audio · Vintage Furniture</p><p class="biz-address">Gowanus</p><p class="biz-desc">Vinyl, audio equipment, and vintage furniture. Only in Gowanus. Gift certificates available. Call 718-GO-CANAL.</p></div>
+      <div class="biz-card"><p class="biz-name">Hazel Village</p><p class="biz-type">Toy Shop</p><p class="biz-address">459 3rd Ave</p><p class="biz-desc">Lovable handmade stuffed animals and woodland creature toys. Ethically made, wildly adorable.</p></div>
+      <div class="biz-card"><p class="biz-name">Klei</p><p class="biz-type">Fashion · Clothing</p><p class="biz-address">Gowanus</p><p class="biz-desc">Independent fashion label with an online store. Unique, thoughtfully designed clothing. Gift cards available.</p></div>
+      <div class="biz-card"><p class="biz-name">Part Wild</p><p class="biz-type">Pet Supplies · Boutique</p><p class="biz-address">299 3rd Ave</p><p class="biz-desc">Boutique pet supply shop on 3rd Ave. Thoughtfully curated food, treats, and accessories for dogs and cats.</p></div>
+      <div class="biz-card"><p class="biz-name">Quick Brown Fox</p><p class="biz-type">Letterpress · Stationery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Letterpress cards and stationery. Online store available. Beautiful handcrafted work.</p></div>
+      <div class="biz-card"><p class="biz-name">RARITY NAILS</p><p class="biz-type">Nail Salon</p><p class="biz-address">281 3rd Ave</p><p class="biz-desc">Nail salon on 3rd Ave offering manicures, pedicures, and nail art in Gowanus.</p></div>
+      <div class="biz-card"><p class="biz-name">RetroFret Vintage Guitars</p><p class="biz-type">Vintage Guitars</p><p class="biz-address">Gowanus</p><p class="biz-desc">Exceptional vintage guitar shop with a national reputation. Browse and purchase by phone or online. A true gem for musicians.</p></div>
+      <div class="biz-card"><p class="biz-name">Save on Scents</p><p class="biz-type">Fragrance Shop</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood fragrance and beauty shop. A local find on the Gowanus strips.</p></div>
+    </div>
+  </div>
+
+  <!-- WELLNESS & FITNESS -->
+  <div class="dir-group" id="dir-wellness">
+    <h3 class="dir-group-title"><span>🌿</span> Wellness &amp; Fitness</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">Abhaya Yoga</p><p class="biz-type">Yoga Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community-rooted yoga studio in Gowanus. Gift cards and online classes available. (718) 682-3270.</p></div>
+      <div class="biz-card"><p class="biz-name">Align Yoga</p><p class="biz-type">Yoga Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Yoga studio with subscription memberships and online class offerings. Gift cards available. (718) 788-3940.</p></div>
+      <div class="biz-card"><p class="biz-name">Bond St Studio</p><p class="biz-type">Fitness Studio</p><p class="biz-address">235 Bond St</p><p class="biz-desc">Fitness and wellness studio on Bond Street. Classes and personal training in the heart of Gowanus.</p></div>
+      <div class="biz-card"><p class="biz-name">Bouldering Project Brooklyn</p><p class="biz-type">Rock Climbing · Fitness</p><p class="biz-address">575 Degraw St</p><p class="biz-desc">16,000 sq ft bouldering gym with programs for all ages starting at 4. After-school programs, youth teams, and Parent's Night Out.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Fencing Center</p><p class="biz-type">Fencing</p><p class="biz-address">Gowanus</p><p class="biz-desc">Fencing academy for youth and adults. Classes for beginners through competitive athletes. (718) 522-5822.</p></div>
+      <div class="biz-card"><p class="biz-name">Citywell Brooklyn</p><p class="biz-type">Wellness · Fitness</p><p class="biz-address">Gowanus</p><p class="biz-desc">Holistic wellness and fitness studio. Gift cards available. (347) 294-0100.</p></div>
+      <div class="biz-card"><p class="biz-name">Delilah Salon</p><p class="biz-type">Hair Salon</p><p class="biz-address">234 4th Ave</p><p class="biz-desc">Neighborhood hair salon on 4th Ave. Haircuts, color, and styling by skilled local stylists.</p></div>
+      <div class="biz-card"><p class="biz-name">F45 Training Park Slope</p><p class="biz-type">Functional Fitness</p><p class="biz-address">150 4th Ave</p><p class="biz-desc">High-intensity functional group training classes at the edge of Gowanus and Park Slope. 45-minute circuit-based workouts for all levels.</p></div>
+      <div class="biz-card"><p class="biz-name">Fumi Brooklyn</p><p class="biz-type">Hair Stylist · Barber</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood hair stylist and barber. (347) 763-0413.</p></div>
+      <div class="biz-card"><p class="biz-name">Good Time Pilates</p><p class="biz-type">Pilates Studio</p><p class="biz-address">289 3rd Ave</p><p class="biz-desc">Friendly neighborhood pilates studio on 3rd Ave. Classes for all levels in a welcoming, community-first environment.</p></div>
+      <div class="biz-card"><p class="biz-name">Gotham Archery</p><p class="biz-type">Archery Range</p><p class="biz-address">480 Baltic St</p><p class="biz-desc">Indoor archery range in Gowanus. Beginners through experienced archers welcome. A genuinely unique neighborhood activity. (718) 858-5060.</p></div>
+      <div class="biz-card"><p class="biz-name">Homage Skateboard Academy</p><p class="biz-type">Skateboarding</p><p class="biz-address">Gowanus</p><p class="biz-desc">Skateboard school and community space for youth and adults. Lessons and open sessions. (718) 596-8151.</p></div>
+      <div class="biz-card"><p class="biz-name">Kick Axe Throwing</p><p class="biz-type">Axe Throwing</p><p class="biz-address">622 Degraw St</p><p class="biz-desc">Urban axe throwing venue — bring your crew for a wildly fun night out. Gift certificates available.</p></div>
+      <div class="biz-card"><p class="biz-name">Llamaste Yoga Center</p><p class="biz-type">Yoga Studio</p><p class="biz-address">391 Bond St</p><p class="biz-desc">Neighborhood yoga center on Bond Street. Classes for all levels in a warm, community-focused space.</p></div>
+      <div class="biz-card"><p class="biz-name">The Muse Gowanus</p><p class="biz-type">Dance · Movement</p><p class="biz-address">Gowanus</p><p class="biz-desc">Dance and movement studio. Online classes available for donation. (929) 376-7626.</p></div>
+      <div class="biz-card"><p class="biz-name">Pilates Garage</p><p class="biz-type">Pilates Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community pilates studio with in-person and online classes. Gift cards available. Follow @pilates.garage.</p></div>
+      <div class="biz-card"><p class="biz-name">Royal Palms Shuffleboard</p><p class="biz-type">Shuffleboard · Bar</p><p class="biz-address">514 Union St</p><p class="biz-desc">Tiki-themed shuffleboard club and bar. Usually 21+ but on Sundays, Small Fry Club opens it to kids 8+ and families. Free lessons and mocktails.</p></div>
+      <div class="biz-card"><p class="biz-name">Speakeasy Of Strength</p><p class="biz-type">Strength Training</p><p class="biz-address">Gowanus</p><p class="biz-desc">Strength and conditioning gym. Online offerings available. Follow @speakeasyofstrengthbk. (347) 889-7676.</p></div>
+    </div>
+  </div>
+
+  <!-- ARTS & STUDIOS -->
+  <div class="dir-group" id="dir-arts">
+    <h3 class="dir-group-title"><span>🎨</span> Arts &amp; Studios</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">Arts Gowanus</p><p class="biz-type">Arts Nonprofit · Gallery</p><p class="biz-address">240 3rd Ave</p><p class="biz-desc">The heartbeat of Gowanus' art community. Hosts Gowanus Open Studios — Brooklyn's biggest annual art event — plus year-round exhibitions and 300+ local artists. <a href="https://www.artsgowanus.org/" target="_blank">artsgowanus.org</a></p></div>
+      <div class="biz-card"><p class="biz-name">Powerhouse Arts</p><p class="biz-type">Arts Fabrication · Nonprofit</p><p class="biz-address">39 Union St</p><p class="biz-desc">World-class nonprofit creative fabrication facility in the former BRT power station — "The Bat Cave." Opened 2022. <a href="https://powerhousearts.org/" target="_blank">powerhousearts.org</a></p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Studio Space</p><p class="biz-type">Artist Studios</p><p class="biz-address">166 7th St</p><p class="biz-desc">Anchor studio building with dozens of working artists across disciplines. Open during Open Studios weekend.</p></div>
+      <div class="biz-card"><p class="biz-name">Interference Archive</p><p class="biz-type">Archive · Gallery · Library</p><p class="biz-address">314 7th St</p><p class="biz-desc">Volunteer-run archive of cultural materials from social movements — posters, zines, films. Free and open to the public.</p></div>
+      <div class="biz-card"><p class="biz-name">Trestle Gallery</p><p class="biz-type">Gallery · Printmaking</p><p class="biz-address">Gowanus</p><p class="biz-desc">Gallery focused on works on paper and printmaking. Community-minded, supporting emerging Gowanus artists.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Darkroom</p><p class="biz-type">Photography · Community Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community darkroom for analog photography — film labs, darkroom rentals, and classes.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Glass</p><p class="biz-type">Glassblowing Studio</p><p class="biz-address">142 5th St</p><p class="biz-desc">Expansive glassblowing studio with classes, rentals, and workshops. Watch molten glass become art — or try it yourself.</p></div>
+      <div class="biz-card"><p class="biz-name">The Painted Pot</p><p class="biz-type">Pottery Painting</p><p class="biz-address">339 3rd Ave</p><p class="biz-desc">Drop-in pottery painting — pick a piece, paint it, they fire it. Pay by piece not hour. Great for dates, families, birthday parties.</p></div>
+      <div class="biz-card"><p class="biz-name">Claireware Pottery</p><p class="biz-type">Pottery Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood pottery studio with classes and open studio time. (718) 875-3977.</p></div>
+      <div class="biz-card"><p class="biz-name">Hey Clay</p><p class="biz-type">Ceramics Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community ceramics and clay studio offering classes and open studio sessions for all levels.</p></div>
+      <div class="biz-card"><p class="biz-name">Logicus</p><p class="biz-type">Creative Studio</p><p class="biz-address">317 3rd Ave</p><p class="biz-desc">Creative studio space on 3rd Ave in Gowanus.</p></div>
+      <div class="biz-card"><p class="biz-name">Theater Mitu</p><p class="biz-type">Theater Company</p><p class="biz-address">Gowanus</p><p class="biz-desc">Experimental theater company creating ambitious, internationally-recognized work from Gowanus. Donations welcome.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Children's Theatre</p><p class="biz-type">Theater · Youth Arts</p><p class="biz-address">Gowanus</p><p class="biz-desc">Children's theater company bringing professional productions and arts education to Brooklyn kids.</p></div>
+      <div class="biz-card"><p class="biz-name">Letter of Marque Theater Co.</p><p class="biz-type">Theater Company</p><p class="biz-address">Gowanus</p><p class="biz-desc">Scrappy, adventurous theater company making original work in Gowanus. (718) 246-2211.</p></div>
+      <div class="biz-card"><p class="biz-name">RetroFret Vintage Guitars</p><p class="biz-type">Vintage Instruments</p><p class="biz-address">Gowanus</p><p class="biz-desc">Exceptional vintage guitar shop with a national reputation. Browse and purchase by phone or online.</p></div>
+      <div class="biz-card"><p class="biz-name">Triple Diamond Tattoo</p><p class="biz-type">Tattoo Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood tattoo parlor in Gowanus. (718) 222-2925.</p></div>
+      <div class="biz-card"><p class="biz-name">InBorn Brooklyn</p><p class="biz-type">Tattoo Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Tattoo studio in Gowanus. (212) 387-8480.</p></div>
+    </div>
+  </div>
+
+  <!-- MUSIC & VENUES -->
+  <div class="dir-group" id="dir-music">
+    <h3 class="dir-group-title"><span>🎵</span> Music &amp; Venues</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">The Bell House</p><p class="biz-type">Music Venue · Event Space</p><p class="biz-address">149 7th St</p><p class="biz-desc">Gowanus' anchor live music venue. Converted warehouse with great sound, intimate feel, and a packed calendar of indie, jazz, and comedy.</p></div>
+      <div class="biz-card"><p class="biz-name">Public Records</p><p class="biz-type">Music Bar · Listening Room</p><p class="biz-address">233 Butler St</p><p class="biz-desc">Vinyl-forward bar with an audiophile sound system, DJ nights, and live performances. Half music venue, half record shop.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Dredgers Boathouse</p><p class="biz-type">Community Space · Venue</p><p class="biz-address">165 2nd St</p><p class="biz-desc">Legendary community space on the canal. Free canoe tours, community events, and the annual Open Studios closing party.</p></div>
+      <div class="biz-card"><p class="biz-name">IBeam Brooklyn</p><p class="biz-type">Music Venue · Recording</p><p class="biz-address">Gowanus</p><p class="biz-desc">Intimate performance space and recording studio. A beloved Gowanus venue for experimental and jazz music.</p></div>
+      <div class="biz-card"><p class="biz-name">King Killer Studios</p><p class="biz-type">Recording Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Professional recording studio in Gowanus. Used by local and national artists. (646) 450-5464.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Music Factory</p><p class="biz-type">Music School · Studio</p><p class="biz-address">Gowanus</p><p class="biz-desc">Music school offering songwriting, music games, and lessons for all ages. (877) 767-3560.</p></div>
+    </div>
+  </div>
+
+  <!-- BIKES & TRANSPORT -->
+  <div class="dir-group" id="dir-bikes">
+    <h3 class="dir-group-title"><span>🚲</span> Bike Shops</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">ACME Bicycle Co.</p><p class="biz-type">Bike Shop</p><p class="biz-address">597 Degraw St</p><p class="biz-desc">Neighborhood bicycle shop on Degraw Street. Sales, repairs, and accessories for the Gowanus cycling community.</p></div>
+      <div class="biz-card"><p class="biz-name">Bicycle Habitat</p><p class="biz-type">Bike Shop</p><p class="biz-address">Gowanus</p><p class="biz-desc">Full-service neighborhood bike shop. Sales, repairs, and accessories. (718) 788-2543.</p></div>
+      <div class="biz-card"><p class="biz-name">718 Cyclery &amp; Outdoors</p><p class="biz-type">Bike Shop · Outdoors</p><p class="biz-address">Gowanus</p><p class="biz-desc">Bike shop and outdoor gear store. Online store available. (347) 457-5760.</p></div>
+      <div class="biz-card"><p class="biz-name">Dixon's Bicycle Shop</p><p class="biz-type">Bike Shop</p><p class="biz-address">Gowanus</p><p class="biz-desc">Classic neighborhood bike shop. Sales and repairs. (718) 636-0067.</p></div>
+    </div>
+  </div>
+
+  <!-- COMMUNITY & LEARNING -->
+  <div class="dir-group" id="dir-community">
+    <h3 class="dir-group-title"><span>🌱</span> Community &amp; Learning</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">Gotham Greens HQ</p><p class="biz-type">Urban Farm · Greenhouse</p><p class="biz-address">315 3rd Ave</p><p class="biz-desc">Gotham Greens' flagship greenhouse and HQ in Gowanus — one of NYC's pioneering urban farming operations growing fresh greens year-round.</p></div>
+      <div class="biz-card"><p class="biz-name">Gowanus Canal Conservancy</p><p class="biz-type">Nonprofit · Green Infrastructure</p><p class="biz-address">248 3rd St</p><p class="biz-desc">Advocates for and maintains green infrastructure around the canal. Tracks the Superfund cleanup and runs habitat restoration, education, and volunteer programs. <a href="https://gowanuscanalconservancy.org/" target="_blank">gowanuscanalconservancy.org</a></p></div>
+      <div class="biz-card"><p class="biz-name">Voice of Gowanus</p><p class="biz-type">Grassroots Advocacy</p><p class="biz-address">Gowanus</p><p class="biz-desc">Grassroots organization demanding accountability on pollution cleanup and development. Runs a community health survey. <a href="https://www.voiceofgowanus.org/" target="_blank">voiceofgowanus.org</a></p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Brainery</p><p class="biz-type">Community Learning</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community-powered classes and workshops on everything. A beloved Brooklyn institution for curious minds. Gift certificates available.</p></div>
+      <div class="biz-card"><p class="biz-name">Sports and Arts</p><p class="biz-type">Youth Programs</p><p class="biz-address">303 3rd Ave</p><p class="biz-desc">Youth-focused sports and arts programming in the heart of Gowanus. Building skills and community for neighborhood kids.</p></div>
+      <div class="biz-card"><p class="biz-name">Acme Dog Run</p><p class="biz-type">Dog Daycare · Dog Run</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood dog daycare and run. Open for daycare. (718) 935-9364.</p></div>
+      <div class="biz-card"><p class="biz-name">A Dog Plays in Brooklyn</p><p class="biz-type">Dog Care</p><p class="biz-address">Gowanus</p><p class="biz-desc">Dog care services with an online shop. Gift certificates available. (908) 227-2431.</p></div>
+    </div>
+  </div>
+
+  <!-- FOR KIDS -->
+  <div class="dir-group" id="dir-kids">
+    <h3 class="dir-group-title"><span>🧒</span> For Kids</h3>
+    <div class="biz-grid">
+      <div class="biz-card"><p class="biz-name">Brooklyn Robot Foundry</p><p class="biz-type">STEM · Robotics Workshops</p><p class="biz-address">579 3rd Ave</p><p class="biz-desc">Drop-in robot-building workshops for kids. Every kid leaves with a working robot they made themselves. Wildly fun and genuinely educational.</p></div>
+      <div class="biz-card"><p class="biz-name">Code Ninjas Gowanus</p><p class="biz-type">Coding · STEM Education</p><p class="biz-address">150 4th Ave</p><p class="biz-desc">Coding school for kids ages 5–14 teaching programming through fun, game-based projects. After-school programs, camps, and drop-in sessions.</p></div>
+      <div class="biz-card"><p class="biz-name">GoodBuy Gear NYC</p><p class="biz-type">Kids Resale · Gear</p><p class="biz-address">244 Butler St</p><p class="biz-desc">Resale shop for quality kids gear — strollers, car seats, clothes, and toys. Buy and sell secondhand. A neighborhood gem for families.</p></div>
+      <div class="biz-card"><p class="biz-name">Hazel Village</p><p class="biz-type">Toy Shop</p><p class="biz-address">459 3rd Ave</p><p class="biz-desc">Gorgeous handmade stuffed woodland animals. The kind of toy shop that makes kids and parents equally happy.</p></div>
+      <div class="biz-card"><p class="biz-name">Hey Clay</p><p class="biz-type">Ceramics · Kids Classes</p><p class="biz-address">Gowanus</p><p class="biz-desc">Creative ceramics and clay studio with kid-friendly classes and family sessions. A hands-on way to make something beautiful.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Children's Theatre</p><p class="biz-type">Theater · Youth Arts</p><p class="biz-address">Gowanus</p><p class="biz-desc">Professional theater and arts education for Brooklyn kids. A wonderful introduction to live performance.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Music Factory</p><p class="biz-type">Music · Kids Classes</p><p class="biz-address">Gowanus</p><p class="biz-desc">Songwriting, music games, and lessons for kids of all ages. Live sessions and free programming regularly available.</p></div>
+      <div class="biz-card"><p class="biz-name">Miss GiGi Kids Haircuts</p><p class="biz-type">Kids Hair Salon</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood kids haircut salon making the dreaded haircut actually fun. Beloved by local families.</p></div>
+      <div class="biz-card"><p class="biz-name">Royal Palms Shuffleboard</p><p class="biz-type">Family Sundays</p><p class="biz-address">514 Union St</p><p class="biz-desc">Usually 21+, but on Sundays hosts Small Fry Shuffleboard Club — kids 8+ and families welcome for free lessons, mocktails, and board games.</p></div>
+      <div class="biz-card"><p class="biz-name">Brooklyn Builders Studio</p><p class="biz-type">Design · Build · Family</p><p class="biz-address">420 Carroll St</p><p class="biz-desc">Hands-on design studio for kids and families centered on architecture and building. Workshops, after-school programs, seasonal camps.</p></div>
+      <div class="biz-card"><p class="biz-name">Sports and Arts</p><p class="biz-type">Youth Programs</p><p class="biz-address">303 3rd Ave</p><p class="biz-desc">Youth sports and arts programming for neighborhood kids. Building skills and community in Gowanus.</p></div>
+      <div class="biz-card"><p class="biz-name">Thomas Greene Playground &amp; Pool</p><p class="biz-type">Playground · Public Pool</p><p class="biz-address">Smith St &amp; 4th St</p><p class="biz-desc">Renovated neighborhood park with a public pool (open summers), sports courts, and green space. The community heart of Gowanus for families.</p></div>
+      <div class="biz-card"><p class="biz-name">NY Preschool &amp; Kids Club</p><p class="biz-type">Play Space · Preschool</p><p class="biz-address">4th Ave</p><p class="biz-desc">Drop-in open play for ages 6 months–4 years in a state-of-the-art gym. 45-minute unstructured sessions with soft climbing structures.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram-section">
+  <div class="ig-header">
+    <div>
+      <div class="eyebrow">From the feed</div>
+      <h2 class="section-title">Follow <span>@GowanusLocals</span></h2>
+      <p class="ig-handle">instagram.com/gowanuslocals</p>
+    </div>
+    <a href="https://www.instagram.com/gowanuslocals/" target="_blank" rel="noopener" class="view-all">Visit on Instagram →</a>
+  </div>
+  <div class="ig-embed-box">
+    <behold-widget feed-id="x6aFVNboARhQs1VehqVU"></behold-widget>
+    <script>
+      (() => {
+        const d=document,s=d.createElement("script");s.type="module";
+        s.src="https://w.behold.so/widget.js";d.head.append(s);
+      })();
+    </script>
+  </div>
+</section>
+
+<!-- CONTACT BAR -->
+<section class="contact-bar">
+  <div class="contact-inner">
+    <p class="contact-text">Something to add? Want to partner? <a href="mailto:GowanusLocals@gmail.com" class="contact-link">Send us a note →</a></p>
+    <a href="mailto:GowanusLocals@gmail.com" class="contact-email">GowanusLocals@gmail.com</a>
+  </div>
+</section>
+
+<!-- NEWSLETTER / SUBSTACK -->
+<section class="newsletter-section">
+  <div class="nl-inner">
+    <h2 class="nl-title">The Weekly<br><span>Gowanus</span><br>Round-Up.</h2>
+    <p class="nl-desc">Events, gallery openings, canal updates, new businesses, neighborhood news — every Thursday morning, straight to your inbox. No fluff, just Gowanus.</p>
+    <a href="https://gowanuslocal.substack.com/?utm_source=gowanuslocals" target="_blank" rel="noopener" class="btn-substack">
+      <span class="substack-icon">S</span>
+      Subscribe on Substack — it's free
+    </a>
+    <p class="nl-fine">Opens in Substack · Free forever · Unsubscribe anytime</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="#" class="footer-logo">Gowanus<span>Locals</span></a>
+        <p class="footer-tagline">A community site for the people, businesses, stories, and future of Gowanus, Brooklyn. Made with love on the canal.</p>
+        <div class="footer-org-links">
+          <a href="https://gowanuscanalconservancy.org/" target="_blank">→ Gowanus Canal Conservancy</a>
+          <a href="https://www.voiceofgowanus.org/" target="_blank">→ Voice of Gowanus</a>
+          <a href="https://gowanusimprovementdistrict.org/" target="_blank">→ Gowanus Improvement District</a>
+          <a href="https://gowanuslocal.substack.com/" target="_blank">→ GowanusLocal Substack</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-links">
+          <li><a href="#">Events calendar</a></li>
+          <li><a href="#">Business directory</a></li>
+          <li><a href="#">Arts & music</a></li>
+          <li><a href="#">Neighborhood history</a></li>
+          <li><a href="#">Community orgs</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Contribute</p>
+        <ul class="footer-links">
+          <li><a href="#">Submit an event</a></li>
+          <li><a href="#">List your business</a></li>
+          <li><a href="#">Share a story</a></li>
+          <li><a href="#">Newsletter archive</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">About</p>
+        <ul class="footer-links">
+          <li><a href="#">About this project</a></li>
+          <li><a href="mailto:GowanusLocals@gmail.com">Contact us</a></li>
+          <li><a href="https://www.instagram.com/gowanuslocals/" target="_blank">Instagram</a></li>
+          <li><a href="https://gowanuslocal.substack.com/" target="_blank">Substack</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 GowanusLocals.com — Made in Brooklyn</span>
+      <span>The canal is coming back. So are we.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// GOOGLE SHEETS EVENTS SYNC
+// HOW TO SET UP:
+// 1. Create a Google Sheet with these column headers in row 1:
+//    title | date | venue | category | link | featured
+// 2. File → Share → Publish to web → Sheet1 → CSV → Publish
+// 3. Copy the URL and paste it below as SHEET_URL
+// 4. Set featured = TRUE on one row to make it the big card
+// ─────────────────────────────────────────────────────────────
+const SHEET_URL = ''; // ← PASTE YOUR PUBLISHED CSV URL HERE
+
+const TAG_CLASSES = {
+  music: 'tag-music', art: 'tag-art', market: 'tag-market',
+  history: 'tag-history', community: 'tag-community', food: 'tag-market'
+};
+
+async function loadEventsFromSheet() {
+  if (!SHEET_URL) return; // No URL set yet — static HTML shows instead
+
+  try {
+    const res = await fetch(SHEET_URL);
+    const csv = await res.text();
+    const rows = csv.trim().split('\n').slice(1); // skip header row
+    const events = rows.map(row => {
+      const cols = row.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+      return { title: cols[0], date: cols[1], venue: cols[2], category: (cols[3]||'').toLowerCase(), link: cols[4], featured: cols[5] === 'TRUE' };
+    }).filter(e => e.title);
+
+    if (!events.length) return;
+
+    const grid = document.querySelector('.events-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const featured = events.find(e => e.featured) || events[0];
+    const rest = events.filter(e => e !== featured).slice(0, 4);
+
+    // Featured card
+    const fc = document.createElement('a');
+    fc.href = featured.link || '#';
+    fc.className = 'event-card featured';
+    fc.innerHTML = `
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=70" alt="Featured event"></div>
+      <span class="event-tag ${TAG_CLASSES[featured.category] || 'tag-community'}">${featured.category || 'Event'}</span>
+      <p class="event-date">${featured.date}</p>
+      <h3 class="event-title">${featured.title}</h3>
+      <p class="event-venue">${featured.venue}</p>`;
+    grid.appendChild(fc);
+
+    // Regular cards
+    rest.forEach(ev => {
+      const card = document.createElement('a');
+      card.href = ev.link || '#';
+      card.className = 'event-card';
+      card.innerHTML = `
+        <span class="event-tag ${TAG_CLASSES[ev.category] || 'tag-community'}">${ev.category || 'Event'}</span>
+        <p class="event-date">${ev.date}</p>
+        <h3 class="event-title">${ev.title}</h3>
+        <p class="event-venue">${ev.venue}</p>`;
+      grid.appendChild(card);
+    });
+
+  } catch (err) {
+    console.log('Sheet sync failed, showing static events:', err);
+  }
+}
+
+loadEventsFromSheet();
+</script>
+</body>
+</html>
