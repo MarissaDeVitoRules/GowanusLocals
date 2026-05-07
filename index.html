@@ -79,7 +79,7 @@
 
   /* TICKER */
   .ticker-wrap { background: var(--rust); padding: 0.65rem 0; overflow: hidden; white-space: nowrap; }
-  .ticker-inner { display: inline-block; animation: ticker 32s linear infinite; }
+  .ticker-inner { display: inline-block; animation: ticker 65s linear infinite; }
   .ticker-inner span { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); margin: 0 2.5rem; }
   .ticker-inner span::before { content: '◆'; margin-right: 2.5rem; opacity: 0.45; font-size: 0.45rem; vertical-align: middle; }
   @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -173,6 +173,89 @@
   .cat-icon { font-size: 1.75rem; display: block; margin-bottom: 0.75rem; }
   .cat-name { font-size: 0.67rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); display: block; margin-bottom: 0.3rem; }
   .cat-count { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.08em; color: var(--stone); }
+
+
+  /* ── EVENTS GRID REDESIGN ── */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--iron);
+    border: 1px solid var(--iron);
+  }
+  .event-card {
+    background: var(--charcoal);
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: background 0.2s;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .event-card:hover { background: var(--steel); }
+  .event-card.featured { grid-column: span 2; grid-row: span 2; position: relative; min-height: 400px; justify-content: flex-end; }
+  .event-card.recurring { border-left: 3px solid var(--green); }
+  .event-img {
+    width: 100%; height: 180px;
+    overflow: hidden; flex-shrink: 0;
+    background: var(--steel);
+  }
+  .event-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    filter: brightness(0.75) saturate(0.7);
+    transition: filter 0.4s, transform 0.4s;
+    display: block;
+  }
+  .event-card:hover .event-img img { filter: brightness(0.9) saturate(0.85); transform: scale(1.03); }
+  .event-card.featured .event-img {
+    position: absolute; inset: 0; height: 100%;
+    z-index: 0;
+  }
+  .event-card.featured .event-img img { height: 100%; filter: brightness(0.3) saturate(0.5); }
+  .event-card.featured:hover .event-img img { filter: brightness(0.4) saturate(0.6); }
+  .event-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+  .event-card.featured .event-body { position: relative; z-index: 1; padding: 2rem; background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.6) 70%, transparent 100%); }
+  .event-tag {
+    display: inline-block; font-size: 0.55rem; font-weight: 800;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.22rem 0.55rem; border: 1px solid; align-self: flex-start;
+    margin-bottom: 0.1rem;
+  }
+  .tag-music { border-color: var(--green); color: var(--green-light); }
+  .tag-art { border-color: var(--canal-blue); color: var(--water); }
+  .tag-market { border-color: var(--amber); color: var(--amber); }
+  .tag-history { border-color: var(--amber); color: var(--amber); }
+  .tag-community { border-color: var(--mist); color: var(--mist); }
+  .event-date {
+    font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone);
+  }
+  .event-card.featured .event-date { color: rgba(255,255,255,0.45); }
+  .event-title {
+    font-size: 0.88rem; font-weight: 800;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    line-height: 1.2; color: var(--cream); margin-top: 0.1rem;
+  }
+  .event-card.featured .event-title { font-size: 1.6rem; color: white; line-height: 1.05; }
+  .event-venue {
+    font-size: 0.7rem; font-weight: 300; color: var(--stone);
+    margin-top: auto; padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .event-card.featured .event-venue { color: rgba(255,255,255,0.45); border-top-color: rgba(255,255,255,0.1); }
+  .event-recurring-badge {
+    font-size: 0.55rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green-light); display: flex; align-items: center; gap: 5px;
+  }
+  .event-recurring-badge::before { content: '↻'; font-size: 0.7rem; }
+  @media (max-width: 900px) {
+    .events-grid { grid-template-columns: 1fr 1fr; }
+    .event-card.featured { grid-column: span 2; min-height: 300px; }
+  }
+  @media (max-width: 600px) {
+    .events-grid { grid-template-columns: 1fr; }
+    .event-card.featured { grid-column: span 1; min-height: 260px; }
+  }
 
   /* DIRECTORY LISTINGS */
   .dir-group { margin-top: 3.5rem; }
@@ -317,8 +400,7 @@
 <!-- TICKER -->
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker-inner">
-    <span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bell House this week: Trae Crowder · Sam Campbell · The Moth StorySLAM</a></span><span><a href="https://gowanuscanalconservancy.org/gowanus-blooms-2026/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Gowanus Blooms Benefit Gala — May 7 @ Powerhouse Arts</a></span><span><a href="https://atolyenyc.com/event/je-ka-majo/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Je Ka Majo at Atolye NYC — May 8 · 10pm</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Arts Gowanus Tower Show — through May 17 @ Union Channel · Free</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Patterns Gala: Welcome to Venice — May 21 @ Gowanus Wharf</a></span><span><a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bomonti Nights Live — May 23 @ Atolye NYC</a></span><span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Ear Hustle Live! — May 28 @ Bell House</a></span><span><a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Summer Night Gala — May 29 @ Atolye NYC</a></span><span><a href="https://gowanuscanalconservancy.org/volunteer" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Canal Conservancy volunteer cleanup day</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">New public art: Hurly Whirly on 4th Ave by David Barthold</a></span><span><a href="https://en.wikipedia.org/wiki/Carroll_Street_Bridge" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Carroll St Bridge — oldest retractile bridge in the US</a></span><span><a href="https://gowanuscanalconservancy.org/superfund" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">EPA Superfund canal cleanup — latest updates</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Free Canoeing on the Gowanus Canal — weekends from late May</a></span><span><a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bitches Brew Comedy — every Friday @ Halyards · Free</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Jug &amp; String Band Sessions — every Tuesday @ Dredgers Boathouse</a></span><span><a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">NYC Parks community input meeting — May 19</a></span><span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bell House this week: Trae Crowder · Sam Campbell · The Moth StorySLAM</a></span><span><a href="https://gowanuscanalconservancy.org/gowanus-blooms-2026/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Gowanus Blooms Benefit Gala — May 7 @ Powerhouse Arts</a></span><span><a href="https://atolyenyc.com/event/je-ka-majo/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Je Ka Majo at Atolye NYC — May 8 · 10pm</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Arts Gowanus Tower Show — through May 17 @ Union Channel · Free</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Patterns Gala: Welcome to Venice — May 21 @ Gowanus Wharf</a></span><span><a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bomonti Nights Live — May 23 @ Atolye NYC</a></span><span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Ear Hustle Live! — May 28 @ Bell House</a></span><span><a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Summer Night Gala — May 29 @ Atolye NYC</a></span><span><a href="https://gowanuscanalconservancy.org/volunteer" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Canal Conservancy volunteer cleanup day</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">New public art: Hurly Whirly on 4th Ave by David Barthold</a></span><span><a href="https://en.wikipedia.org/wiki/Carroll_Street_Bridge" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Carroll St Bridge — oldest retractile bridge in the US</a></span><span><a href="https://gowanuscanalconservancy.org/superfund" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">EPA Superfund canal cleanup — latest updates</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Free Canoeing on the Gowanus Canal — weekends from late May</a></span><span><a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bitches Brew Comedy — every Friday @ Halyards · Free</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Jug &amp; String Band Sessions — every Tuesday @ Dredgers Boathouse</a></span><span><a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">NYC Parks community input meeting — May 19</a></span>
-  </div>
+    <span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bell House this week: Trae Crowder · Sam Campbell · The Moth StorySLAM</a></span><span><a href="https://gowanuscanalconservancy.org/gowanus-blooms-2026/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Gowanus Blooms Benefit Gala — May 7 @ Powerhouse Arts</a></span><span><a href="https://atolyenyc.com/event/je-ka-majo/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Je Ka Majo at Atolye NYC — May 8 · 10pm</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Arts Gowanus Tower Show — through May 17 @ Union Channel · Free</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Patterns Gala: Welcome to Venice — May 21 @ Gowanus Wharf</a></span><span><a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bomonti Nights Live — May 23 @ Atolye NYC</a></span><span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Ear Hustle Live! — May 28 @ Bell House</a></span><span><a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Summer Night Gala — May 29 @ Atolye NYC</a></span><span><a href="https://gowanuscanalconservancy.org/volunteer" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Canal Conservancy volunteer cleanup day</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">New public art: Hurly Whirly on 4th Ave by David Barthold</a></span><span><a href="https://en.wikipedia.org/wiki/Carroll_Street_Bridge" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Carroll St Bridge — oldest retractile bridge in the US</a></span><span><a href="https://gowanuscanalconservancy.org/superfund" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">EPA Superfund canal cleanup — latest updates</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Free Canoeing on the Gowanus Canal — weekends from late May</a></span><span><a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bitches Brew Comedy — every Friday @ Halyards · Free</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Jug &amp; String Band Sessions — every Tuesday @ Dredgers Boathouse</a></span><span><a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">NYC Parks community input meeting — May 19</a></span><span><a href="https://www.lowlandsbar.com/events/chris-potter-trio" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Chris Potter Trio @ Lowlands — May 11 · Live jazz · 9:15pm</a></span><span><a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Karaoke with Amethyst Valentino — every Wednesday @ Lowlands</a></span><span><a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Live Music Mondays &amp; Tuesdays @ Lowlands · 543 3rd Ave</a></span><span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bell House this week: Trae Crowder · Sam Campbell · The Moth StorySLAM</a></span><span><a href="https://gowanuscanalconservancy.org/gowanus-blooms-2026/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Gowanus Blooms Benefit Gala — May 7 @ Powerhouse Arts</a></span><span><a href="https://atolyenyc.com/event/je-ka-majo/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Je Ka Majo at Atolye NYC — May 8 · 10pm</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Arts Gowanus Tower Show — through May 17 @ Union Channel · Free</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Patterns Gala: Welcome to Venice — May 21 @ Gowanus Wharf</a></span><span><a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bomonti Nights Live — May 23 @ Atolye NYC</a></span><span><a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Ear Hustle Live! — May 28 @ Bell House</a></span><span><a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Summer Night Gala — May 29 @ Atolye NYC</a></span><span><a href="https://gowanuscanalconservancy.org/volunteer" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Canal Conservancy volunteer cleanup day</a></span><span><a href="https://www.artsgowanus.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">New public art: Hurly Whirly on 4th Ave by David Barthold</a></span><span><a href="https://en.wikipedia.org/wiki/Carroll_Street_Bridge" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Carroll St Bridge — oldest retractile bridge in the US</a></span><span><a href="https://gowanuscanalconservancy.org/superfund" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">EPA Superfund canal cleanup — latest updates</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Free Canoeing on the Gowanus Canal — weekends from late May</a></span><span><a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Bitches Brew Comedy — every Friday @ Halyards · Free</a></span><span><a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Jug &amp; String Band Sessions — every Tuesday @ Dredgers Boathouse</a></span><span><a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">NYC Parks community input meeting — May 19</a></span><span><a href="https://www.lowlandsbar.com/events/chris-potter-trio" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Chris Potter Trio @ Lowlands — May 11 · Live jazz · 9:15pm</a></span><span><a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Karaoke with Amethyst Valentino — every Wednesday @ Lowlands</a></span><span><a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Live Music Mondays &amp; Tuesdays @ Lowlands · 543 3rd Ave</a></span></div>
 </div>
 
 
@@ -330,94 +412,166 @@
       <div class="eyebrow">What's on</div>
       <h2 class="section-title">Upcoming <span>Events</span></h2>
     </div>
-    <a href="#" class="view-all">Full calendar →</a>
   </div>
   <div class="events-grid">
+
+    <!-- FEATURED: Gowanus Blooms -->
     <a href="https://gowanuscanalconservancy.org/gowanus-blooms-2026/" target="_blank" rel="noopener" class="event-card featured">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=70" alt="Gowanus Blooms"></div>
-      <span class="event-tag tag-community">Benefit Gala</span>
-      <p class="event-date">Wed, May 7 · 7pm · Powerhouse Arts</p>
-      <h3 class="event-title">Gowanus Blooms 2026</h3>
-      <p class="event-venue">Local food · Live music · Supports the Canal Conservancy</p>
+      <div class="event-img"><img src="https://gowanuscanalconservancy.org/wp-content/uploads/2026/02/Website-Home-Page-Tile-300x400px.jpg" alt="Gowanus Blooms 2026" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="event-body">
+        <span class="event-tag tag-community">Benefit Gala</span>
+        <p class="event-date">Wed, May 7 · 7pm · Powerhouse Arts Grand Hall</p>
+        <h3 class="event-title">Gowanus Blooms 2026</h3>
+        <p class="event-venue">Food from local restaurants · Live music · Supporting the Canal Conservancy · Get tickets →</p>
+      </div>
     </a>
+
+    <!-- Je Ka Majo -->
     <a href="https://atolyenyc.com/event/je-ka-majo/" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-music">Live Music</span>
-      <p class="event-date">Fri, May 8 · 10pm · Atolye NYC</p>
-      <h3 class="event-title">Je Ka Majo</h3>
-      <p class="event-venue">236 6th St, Brooklyn</p>
+      <div class="event-img"><img src="https://atolyenyc.com/wp-content/uploads/2026/04/Screenshot-2026-04-22-at-8.27.49-PM-819x1024.png" alt="Je Ka Majo" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="event-body">
+        <span class="event-tag tag-music">Live Music</span>
+        <p class="event-date">Fri, May 8 · 10pm–3am</p>
+        <h3 class="event-title">Je Ka Majo</h3>
+        <p class="event-venue">Atolye NYC · 236 6th St · Find out more →</p>
+      </div>
     </a>
+
+    <!-- The Moth -->
     <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-art">Comedy</span>
-      <p class="event-date">Mon, May 11 · 8pm · The Bell House</p>
-      <h3 class="event-title">The Moth StorySLAM</h3>
-      <p class="event-venue">149 7th St · $33+ tickets</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1508997449629-303059a039c0?w=600&q=70" alt="The Moth StorySLAM" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-art">Storytelling</span>
+        <p class="event-date">Mon, May 11 · 8pm</p>
+        <h3 class="event-title">The Moth StorySLAM</h3>
+        <p class="event-venue">The Bell House · 149 7th St · $33+ tickets →</p>
+      </div>
     </a>
+
+    <!-- Sam Campbell -->
     <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-music">Comedy · SOLD OUT</span>
-      <p class="event-date">Tue–Wed, May 12–13 · Bell House</p>
-      <h3 class="event-title">Sam Campbell — Two Nights</h3>
-      <p class="event-venue">149 7th St · Check resale for tickets</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=600&q=70" alt="Sam Campbell" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-art">Comedy · Sold Out</span>
+        <p class="event-date">Tue–Wed, May 12–13 · 7:30pm</p>
+        <h3 class="event-title">Sam Campbell — Two Nights</h3>
+        <p class="event-venue">The Bell House · Check resale →</p>
+      </div>
     </a>
+
+    <!-- Tower Show -->
     <a href="https://www.artsgowanus.org" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-art">Exhibition · Free</span>
-      <p class="event-date">Through May 17 · Union Channel</p>
-      <h3 class="event-title">The Tower Show — Year 5</h3>
-      <p class="event-venue">240 3rd Ave · Artist interpretations of the water tower</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1575340175567-b0f7a46fa93b?w=600&q=70" alt="The Tower Show" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-art">Exhibition · Free</span>
+        <p class="event-date">Through May 17 · Union Channel</p>
+        <h3 class="event-title">The Tower Show — Year 5</h3>
+        <p class="event-venue">240 3rd Ave · Artist water tower interpretations · More info →</p>
+      </div>
     </a>
+
+    <!-- Patterns Gala -->
     <a href="https://www.artsgowanus.org" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-art">Gala</span>
-      <p class="event-date">Thu, May 21 · Gowanus Wharf</p>
-      <h3 class="event-title">Patterns Gala: Welcome to Venice</h3>
-      <p class="event-venue">240 3rd Ave · Arts Gowanus Annual Fundraiser</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=70" alt="Patterns Gala" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-art">Annual Gala</span>
+        <p class="event-date">Thu, May 21 · Gowanus Wharf</p>
+        <h3 class="event-title">Patterns Gala: Welcome to Venice</h3>
+        <p class="event-venue">Arts Gowanus Fundraiser · 240 3rd Ave · More info →</p>
+      </div>
     </a>
+
+    <!-- Bomonti Nights -->
     <a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-music">Live Music</span>
-      <p class="event-date">Fri, May 23 · 9pm · Atolye NYC</p>
-      <h3 class="event-title">Bomonti Nights — 90s Turkish Pop Live</h3>
-      <p class="event-venue">236 6th St · Sercan Kaya &amp; crew</p>
+      <div class="event-img"><img src="https://atolyenyc.com/wp-content/uploads/2026/05/ChatGPT-Image-May-5-2026-07_59_23-PM.png" alt="Bomonti Nights" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="event-body">
+        <span class="event-tag tag-music">Live Music</span>
+        <p class="event-date">Fri, May 23 · 9pm–2am</p>
+        <h3 class="event-title">Bomonti Nights — 90s Turkish Pop Live</h3>
+        <p class="event-venue">Atolye NYC · 236 6th St · Tickets →</p>
+      </div>
     </a>
+
+    <!-- Ear Hustle -->
     <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-community">Podcast Live</span>
-      <p class="event-date">Thu, May 28 · 7:30pm · Bell House</p>
-      <h3 class="event-title">Ear Hustle Live!</h3>
-      <p class="event-venue">149 7th St · The prison podcast, live on stage</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=70" alt="Ear Hustle Live" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-community">Podcast Live</span>
+        <p class="event-date">Thu, May 28 · 7:30pm</p>
+        <h3 class="event-title">Ear Hustle Live!</h3>
+        <p class="event-venue">The Bell House · 149 7th St · Tickets →</p>
+      </div>
     </a>
+
+    <!-- Summer Night Gala -->
     <a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-market">Gala</span>
-      <p class="event-date">Fri, May 29 · 7:30pm · Atolye NYC</p>
-      <h3 class="event-title">Summer Night Gala</h3>
-      <p class="event-venue">236 6th St, Brooklyn</p>
+      <div class="event-img"><img src="https://atolyenyc.com/wp-content/uploads/2026/04/Screenshot-2026-04-22-at-8.21.32-PM.png" alt="Summer Night Gala" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="event-body">
+        <span class="event-tag tag-market">Gala</span>
+        <p class="event-date">Fri, May 29 · 7:30–10:30pm</p>
+        <h3 class="event-title">Summer Night Gala</h3>
+        <p class="event-venue">Atolye NYC · 236 6th St · Tickets →</p>
+      </div>
     </a>
+
+    <!-- Tatiana & Katie -->
     <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-music">Comedy</span>
-      <p class="event-date">Fri, May 29 · 9:30pm · Bell House</p>
-      <h3 class="event-title">Tatiana Frank &amp; Katie Hannigan</h3>
-      <p class="event-venue">149 7th St · Co-headline comedy night</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=600&q=70" alt="Comedy Night" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-art">Comedy</span>
+        <p class="event-date">Fri, May 29 · 9:30pm</p>
+        <h3 class="event-title">Tatiana Frank &amp; Katie Hannigan</h3>
+        <p class="event-venue">The Bell House · Co-headline night · Tickets →</p>
+      </div>
     </a>
-    <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-community">Free · Outdoors</span>
-      <p class="event-date">Weekends from late May · 165 2nd St</p>
-      <h3 class="event-title">Free Canoeing on the Gowanus Canal</h3>
-      <p class="event-venue">Gowanus Dredgers Boathouse · Self-guided · No reservation needed</p>
+
+    <!-- FREE CANOEING - recurring -->
+    <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="event-card recurring">
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?w=600&q=70" alt="Canoeing on the Gowanus" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-recurring-badge">Every weekend from late May</span>
+        <span class="event-tag tag-community">Free · Outdoors</span>
+        <p class="event-date">Weekends · 165 2nd St</p>
+        <h3 class="event-title">Free Canoeing on the Gowanus Canal</h3>
+        <p class="event-venue">Dredgers Boathouse · Self-guided · No reservation needed →</p>
+      </div>
     </a>
-    <a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-music">Comedy · Every Friday</span>
-      <p class="event-date">Every Friday night · Halyards</p>
-      <h3 class="event-title">Bitches Brew Comedy Night</h3>
-      <p class="event-venue">406 3rd Ave · Various comics · Free · Walk-in welcome</p>
+
+    <!-- BITCHES BREW - recurring -->
+    <a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" class="event-card recurring">
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=70" alt="Comedy Night at Halyards" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-recurring-badge">Every Friday night</span>
+        <span class="event-tag tag-art">Comedy · Free</span>
+        <p class="event-date">Every Friday · Halyards</p>
+        <h3 class="event-title">Bitches Brew Comedy Night</h3>
+        <p class="event-venue">406 3rd Ave · Various comics · Walk-in welcome · @halyard_bar →</p>
+      </div>
     </a>
-    <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-music">Music · Every Tuesday</span>
-      <p class="event-date">Every Tuesday · Dredgers Boathouse</p>
-      <h3 class="event-title">Gowanus Jug &amp; String Band Sessions</h3>
-      <p class="event-venue">165 2nd St · Intermediate &amp; advanced players · Free</p>
+
+    <!-- JUG & STRING - recurring -->
+    <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="event-card recurring">
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=70" alt="Jug and String Band" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-recurring-badge">Every Tuesday</span>
+        <span class="event-tag tag-music">Music · Free</span>
+        <p class="event-date">Every Tuesday · Dredgers Boathouse</p>
+        <h3 class="event-title">Gowanus Jug &amp; String Band Sessions</h3>
+        <p class="event-venue">165 2nd St · Intermediate &amp; advanced players welcome →</p>
+      </div>
     </a>
+
+    <!-- NYC PARKS MEETING -->
     <a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" class="event-card">
-      <span class="event-tag tag-community">Community · May 19</span>
-      <p class="event-date">Tue, May 19 · Gowanus</p>
-      <h3 class="event-title">NYC Parks: Gowanus Waterfront Input Meeting</h3>
-      <p class="event-venue">In-person community meeting on Gowanus waterfront sites · NYC Parks</p>
+      <div class="event-img"><img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=600&q=70" alt="Community Meeting" loading="lazy"></div>
+      <div class="event-body">
+        <span class="event-tag tag-community">Community · Free</span>
+        <p class="event-date">Tue, May 19 · Gowanus</p>
+        <h3 class="event-title">NYC Parks: Gowanus Waterfront Input Meeting</h3>
+        <p class="event-venue">In-person input on waterfront sites · NYC Parks · RSVP →</p>
+      </div>
     </a>
+
   </div>
 </section>
 
@@ -473,54 +627,30 @@
   <div class="dir-group" id="dir-food">
     <h3 class="dir-group-title"><span>🍕</span> Food & Drink</h3>
     <div class="biz-grid">
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/7ninthstreet" target="_blank" rel="noopener" class="biz-link">7 9th Street Luncheonette</a></p><p class="biz-type">Diner</p><p class="biz-address">9th St</p><p class="biz-desc">Cash-only neighborhood diner. Ask Annette for the Hungry Man breakfast special with french toast on a Saturday morning.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/abbotsfordroad" target="_blank" rel="noopener" class="biz-link">Abbotsford Road Coffee</a></p><p class="biz-type">Coffee Roaster · Café</p><p class="biz-address">Gowanus</p><p class="biz-desc">Kosher coffee roaster and café with excellent pastries. Still roasting in-house. Mon–Sat 9–2.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/amigosgowanus" target="_blank" rel="noopener" class="biz-link">Amigo's Deli Grocery</a></p><p class="biz-type">Deli · Grocery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood deli and grocery. A local staple for quick bites and essentials.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://amplehills.com" target="_blank" rel="noopener" class="biz-link">Ample Hills Creamery</a></p><p class="biz-type">Ice Cream</p><p class="biz-address">Gowanus</p><p class="biz-desc">Beloved local ice cream shop with inventive flavors. A neighborhood institution.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://babaspierogies.com" target="_blank" rel="noopener" class="biz-link">Baba's Pierogies</a></p><p class="biz-type">Restaurant</p><p class="biz-address">295 3rd Ave</p><p class="biz-desc">Bright, modern pierogi spot with rotating fillings — potato &amp; cheese, spinach &amp; feta, short rib. Open 11:30am–9pm.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/backtojohnsdeli" target="_blank" rel="noopener" class="biz-link">Back to John's Deli</a></p><p class="biz-type">Deli</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood deli with delivery and pickup. A local quick-stop staple.</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://www.mapquest.com/us/new-york/back-to-john-deli-275925328" target="_blank" rel="noopener" class="biz-link">Back to John's Deli</a></p><p class="biz-type">Deli</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood deli with delivery and pickup. A local quick-stop staple.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/beanmongercoffee" target="_blank" rel="noopener" class="biz-link">Beanmonger Coffee</a></p><p class="biz-type">Coffee Shop</p><p class="biz-address">620 Union St</p><p class="biz-desc">Neighborhood coffee shop on Union Street serving the Gowanus community.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/thebeardedbakerny" target="_blank" rel="noopener" class="biz-link">Bearded Baker</a></p><p class="biz-type">Bakery</p><p class="biz-address">8 Saint Marks Place</p><p class="biz-desc">Artisan bakery bringing fresh-baked goods to the neighborhood. Pastries, breads, and more.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/blackmountainwinehouse" target="_blank" rel="noopener" class="biz-link">Black Mountain Wine House</a></p><p class="biz-type">Wine Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Cozy wine bar with a great selection and intimate atmosphere. Takeout and delivery available.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/boranthai" target="_blank" rel="noopener" class="biz-link">Boran Thai Restaurant</a></p><p class="biz-type">Thai Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Solid neighborhood Thai spot. Order via Beyond Menu for delivery.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/burritospotbk" target="_blank" rel="noopener" class="biz-link">Burrito Spot</a></p><p class="biz-type">Mexican</p><p class="biz-address">Gowanus</p><p class="biz-desc">Quick, solid burritos for delivery or pickup. A neighborhood go-to for Mexican food.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/cafemars.bk" target="_blank" rel="noopener" class="biz-link">Café Mars</a></p><p class="biz-type">Café · Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">A neighborhood café and wine bar with a relaxed, artsy vibe. Great for a coffee during the day or a glass of wine at night.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.clarobk.com" target="_blank" rel="noopener" class="biz-link">Claro</a></p><p class="biz-type">Mexican Restaurant ★ Michelin</p><p class="biz-address">284 3rd Ave</p><p class="biz-desc">The first Gowanus restaurant to earn a Michelin Guide star. Chef TJ Provenzano's Oaxacan-inspired menu features handmade masa, wood-fired meats, and an exceptional mezcal list. The back garden patio is one of Brooklyn's great dining secrets. Book well in advance.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/cottabenebk" target="_blank" rel="noopener" class="biz-link">Cotta Bene</a></p><p class="biz-type">Italian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Italian with chefs Paul D'Avino and Jorge Olarte. Quirky, delicious, and worth reserving.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/daigosushi" target="_blank" rel="noopener" class="biz-link">Daigo Sushi Roll Bar</a></p><p class="biz-type">Sushi</p><p class="biz-address">527 Carroll St</p><p class="biz-desc">Neighborhood sushi spot on Carroll Street. Fresh rolls and Japanese fare.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/elmexicanobk" target="_blank" rel="noopener" class="biz-link">El Mexicano</a></p><p class="biz-type">Mexican Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Mexican spot. Delivery via Seamless.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://evalynstaphouse.com" target="_blank" rel="noopener" class="biz-link">Evalyn's Tap House</a></p><p class="biz-type">Bar · Taphouse</p><p class="biz-address">236 Butler St</p><p class="biz-desc">Neighborhood taphouse on Butler Street with a solid beer selection and a welcoming local crowd.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/everybodyeatsbk" target="_blank" rel="noopener" class="biz-link">Everybody Eats</a></p><p class="biz-type">Vegan Bakery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Vegan, gluten-free, preservative-free handmade baked goods. The babka muffins are legendary. Get there early — items sell out.</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/everybodyeatsnyc/" target="_blank" rel="noopener" class="biz-link">Everybody Eats</a></p><p class="biz-type">Vegan Bakery</p><p class="biz-address">Gowanus</p><p class="biz-desc">Artisanal, allergy-free family bakery. Handmade vegan, gluten-free baked goods that actually taste incredible. The babka muffins are legendary. Get there early — things sell out fast.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.finbackbrewery.com" target="_blank" rel="noopener" class="biz-link">Finback Brooklyn</a></p><p class="biz-type">Brewery</p><p class="biz-address">545 President St</p><p class="biz-desc">Highly regarded craft brewery with a Gowanus taproom. Beer to go daily until 7pm.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.fletchersbrooklyn.com" target="_blank" rel="noopener" class="biz-link">Fletchers BBQ</a></p><p class="biz-type">BBQ Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Solid neighborhood BBQ. Sun–Thu 11am–9pm, Fri–Sat 11am–10pm. Pickup and takeout focused.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://birdsblack.com" target="_blank" rel="noopener" class="biz-link">Four &amp; Twenty Blackbirds</a></p><p class="biz-type">Pie Shop · Café</p><p class="biz-address">Gowanus</p><p class="biz-desc">Acclaimed pie shop and café. Seasonal, inventive pies baked in-house. Available in-store, online, Caviar, and Grubhub.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/giardinipizzeria" target="_blank" rel="noopener" class="biz-link">Giardini Pizzeria</a></p><p class="biz-type">Pizza</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood pizzeria. Delivery via Seamless.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/gowanusconvenience" target="_blank" rel="noopener" class="biz-link">Gowanus Convenience</a></p><p class="biz-type">Convenience Store</p><p class="biz-address">4th Ave &amp; 7th St</p><p class="biz-desc">Neighborhood convenience store serving the community.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/gowanusgardens" target="_blank" rel="noopener" class="biz-link">Gowanus Gardens</a></p><p class="biz-type">Café · Garden</p><p class="biz-address">Gowanus</p><p class="biz-desc">Community café and garden space. Best place in the neighborhood for tea and occasional live performers. Follow @gowanusgardens.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/guacamolemexicangrille" target="_blank" rel="noopener" class="biz-link">Guacamole Mexican Grille</a></p><p class="biz-type">Mexican Restaurant</p><p class="biz-address">250 4th Ave</p><p class="biz-desc">Neighborhood Mexican restaurant on 4th Avenue with fresh guacamole, tacos, and burritos.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/guerosbk" target="_blank" rel="noopener" class="biz-link">Guero's Brooklyn</a></p><p class="biz-type">Mexican Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Beloved neighborhood Mexican spot. Open for delivery Thurs–Sun.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" class="biz-link">Halyards</a></p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">406 3rd Ave</p><p class="biz-desc">Canal-side bar with a massive outdoor dock and legendary slushy margaritas. One of the best spots in Gowanus to watch the sun go down.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/hemosspot" target="_blank" rel="noopener" class="biz-link">Hemo's Spot Juice Bar &amp; Cafe</a></p><p class="biz-type">Juice Bar · Café</p><p class="biz-address">253 3rd Ave</p><p class="biz-desc">Fresh juices, smoothies, and café fare on 3rd Ave. A healthy neighborhood option.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.insabk.com" target="_blank" rel="noopener" class="biz-link">Insa</a></p><p class="biz-type">Korean BBQ · Bar</p><p class="biz-address">328 Douglass St</p><p class="biz-desc">Korean BBQ with tabletop grills for cooking your own meats, plus private karaoke rooms that have made this one of the most popular birthday party destinations in Brooklyn. Loud, delicious, and completely its own thing. Book ahead or wait.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/jasimgyros" target="_blank" rel="noopener" class="biz-link">Jasim Gyros</a></p><p class="biz-type">Mediterranean</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood gyro spot. Delivery via Grubhub and Seamless.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/kananindian" target="_blank" rel="noopener" class="biz-link">Kanan Indian Restaurant</a></p><p class="biz-type">Indian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Indian restaurant. Call directly to order and cut out middleman costs.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/laparadaexpress" target="_blank" rel="noopener" class="biz-link">La Parada Express</a></p><p class="biz-type">Latin Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Latin spot with takeout and delivery.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/lavenderlakebar" target="_blank" rel="noopener" class="biz-link">Lavender Lake</a></p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">383 Carroll St</p><p class="biz-desc">Named cheekily for the canal's historically pungent aroma. Relaxed neighborhood bar and restaurant with one of Gowanus' best outdoor garden spaces. Genuinely welcoming to everyone — families, dogs, first dates, and longtime locals.</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://www.yelp.com/biz/kanan-indian-restaurant-brooklyn" target="_blank" rel="noopener" class="biz-link">Kanan Indian Restaurant</a></p><p class="biz-type">Indian Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Indian restaurant. Call directly to order and cut out middleman costs.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/linebagels" target="_blank" rel="noopener" class="biz-link">Line Bagels</a></p><p class="biz-type">Bagels</p><p class="biz-address">Gowanus</p><p class="biz-desc">Fresh bagels Mon–Sun 5am–5pm. Call for delivery. A no-fuss neighborhood essential.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/littleneckbk" target="_blank" rel="noopener" class="biz-link">Little Neck</a></p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood bar and restaurant with a loyal local following. Fri 3–8pm, Sat/Sun 12–7pm.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/loafersbk" target="_blank" rel="noopener" class="biz-link">Loafers Cocktail Bar</a></p><p class="biz-type">Cocktail Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Low-key neighborhood cocktail bar with a carefully curated drinks menu and a welcoming, no-fuss vibe.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/lowlandsbk" target="_blank" rel="noopener" class="biz-link">Lowlands</a></p><p class="biz-type">Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Cozy neighborhood bar with a warm, lived-in feel and regular local crowd.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/luceyslounge" target="_blank" rel="noopener" class="biz-link">Lucey's Lounge</a></p><p class="biz-type">Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood bar with large-batch cocktails and a front window pickup setup. Follow @luceyslounge.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/lucky13saloonbk" target="_blank" rel="noopener" class="biz-link">Lucky 13 Saloon</a></p><p class="biz-type">Dive Bar</p><p class="biz-address">644 Sackett St</p><p class="biz-desc">A true Gowanus dive bar with a loyal following, cold beer, and neighborhood energy on Sackett Street.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/michaelandpings" target="_blank" rel="noopener" class="biz-link">Michael &amp; Pings</a></p><p class="biz-type">Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood restaurant. Gift cards available.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/mirrorteahouse" target="_blank" rel="noopener" class="biz-link">Mirror Tea &amp; Sake House</a></p><p class="biz-type">Tea House · Sake Bar</p><p class="biz-address">575 Union St</p><p class="biz-desc">The best place in Gowanus for tea. Occasional live performers, beautiful space, and a sake selection to boot.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/missiondoloresbk" target="_blank" rel="noopener" class="biz-link">Mission Dolores</a></p><p class="biz-type">Bar</p><p class="biz-address">249 4th Ave</p><p class="biz-desc">Large outdoor bar-garden loved for its beer selection and laid-back vibe. A great warm-weather destination.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/montesrestaurant451" target="_blank" rel="noopener" class="biz-link">Monte's</a></p><p class="biz-type">Bar · Restaurant</p><p class="biz-address">451 Carroll St</p><p class="biz-desc">Longtime neighborhood Italian-American institution on Carroll St. One of Gowanus' most storied establishments.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/mycubanspotbk" target="_blank" rel="noopener" class="biz-link">My Cuban Spot</a></p><p class="biz-type">Cuban Restaurant</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood Cuban spot. Order via ChowNow.</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://loafersbar.com/" target="_blank" rel="noopener" class="biz-link">Loafers Cocktail Bar</a></p><p class="biz-type">Cocktail Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Low-key neighborhood cocktail bar with a carefully curated drinks menu and a welcoming, no-fuss vibe.</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://www.lowlandsbar.com/" target="_blank" rel="noopener" class="biz-link">Lowlands</a></p><p class="biz-type">Bar</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood bar and live music venue at 543 3rd Ave with a stacked weekly calendar. Live Music Mondays & Tuesdays, Karaoke Wednesdays with Amethyst Valentino. May highlights: Chris Potter Trio (May 11), Tim Berne ensemble (May 12), Blue Monday (May 19). Check the full schedule at lowlandsbar.com</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://www.lucky13saloon.com/" target="_blank" rel="noopener" class="biz-link">Lucky 13 Saloon</a></p><p class="biz-type">Dive Bar</p><p class="biz-address">644 Sackett St</p><p class="biz-desc">A true Gowanus dive bar with a loyal following, cold beer, and neighborhood energy on Sackett Street.</p></div>
+      <div class="biz-card"><p class="biz-name"><a href="https://www.mirrorinthewoods.com/" target="_blank" rel="noopener" class="biz-link">Mirror Tea &amp; Sake House</a></p><p class="biz-type">Tea House · Sake Bar</p><p class="biz-address">575 Union St</p><p class="biz-desc">The best place in Gowanus for tea. Occasional live performers, beautiful space, and a sake selection to boot.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.ninthstreetespresso.com" target="_blank" rel="noopener" class="biz-link">Ninth Street Espresso</a></p><p class="biz-type">Coffee Shop</p><p class="biz-address">9th St</p><p class="biz-desc">Acclaimed specialty espresso bar with a minimalist ethos and serious coffee. A neighborhood morning ritual.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/numberonedelibk" target="_blank" rel="noopener" class="biz-link">Number One Deli</a></p><p class="biz-type">Deli</p><p class="biz-address">Gowanus</p><p class="biz-desc">Classic neighborhood deli. A quick, reliable local staple.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/oaxacataqueriabk" target="_blank" rel="noopener" class="biz-link">Oaxaca Taqueria</a></p><p class="biz-type">Taqueria</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood taqueria with a loyal following. Available across all major delivery platforms.</p></div>
-      <div class="biz-card"><p class="biz-name"><a href="https://www.palosantorestaurant.com" target="_blank" rel="noopener" class="biz-link">Palo Santo</a></p><p class="biz-type">Restaurant</p><p class="biz-address">652 Union St</p><p class="biz-desc">Latin American-inspired farm-to-table restaurant with a beautiful backyard garden. One of Gowanus' most acclaimed dining destinations.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/parklifebk" target="_blank" rel="noopener" class="biz-link">Parklife / Littlefield</a></p><p class="biz-type">Bar · Event Space</p><p class="biz-address">636 Degraw St</p><p class="biz-desc">Hybrid indoor/outdoor bar and event space hosting movie nights, pop-up markets, and live events. A Gowanus staple for gatherings.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.pigbeachnyc.com" target="_blank" rel="noopener" class="biz-link">Pig Beach Brooklyn</a></p><p class="biz-type">BBQ · Beer Garden</p><p class="biz-address">480 Union St</p><p class="biz-desc">Massive BBQ and beer garden on the water — ribs, brisket, and cold beer in a huge outdoor space. A Gowanus summer essential.</p></div>
       <div class="biz-card"><p class="biz-name"><a href="https://www.instagram.com/pizzabrunobk" target="_blank" rel="noopener" class="biz-link">Pizza Bruno</a></p><p class="biz-type">Pizza</p><p class="biz-address">Gowanus</p><p class="biz-desc">Neighborhood pizza spot. Order via ChowNow.</p></div>
