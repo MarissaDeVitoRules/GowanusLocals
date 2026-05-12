@@ -31,7 +31,7 @@
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: var(--font); background: var(--black); color: var(--cream); overflow-x: hidden; }
+  body { isolation: isolate; font-family: var(--font); background: var(--black); color: var(--cream); overflow-x: hidden; }
 
   /* NAV */
   nav {
@@ -50,7 +50,7 @@
   .nav-cta:hover { background: var(--rust-bright) !important; }
 
   /* HERO */
-  .hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--black); }
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end; overflow: hidden; isolation: isolate; background: var(--black); }
   .hero-bg {
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     overflow: hidden; z-index: 0;
@@ -99,7 +99,7 @@
   .view-all:hover { gap: 14px; color: var(--rust-bright); }
 
   /* EVENTS */
-  .events-section { padding: 6rem 4rem; max-width: 1400px; margin: 0 auto; }
+  .events-section { padding: 6rem 4rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; background: var(--black); }
   .events-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); }
   .events-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 2px; background: var(--iron); border: 1px solid var(--iron); }
   .event-card { background: var(--charcoal); padding: 2rem; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: background 0.2s; }
@@ -167,7 +167,106 @@
   .cat-name { font-size: 0.67rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); display: block; margin-bottom: 0.3rem; }
   .cat-count { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.08em; color: var(--stone); }
 
-  /* ── EVENTS GRID REDESIGN ── */
+
+  .event-card .event-img { background: var(--charcoal); border-bottom: 3px solid var(--iron); }
+  .event-card:has(.tag-music) .event-img { border-bottom-color: var(--green); }
+  .event-card:has(.tag-art) .event-img { border-bottom-color: var(--water); }
+  .event-card:has(.tag-community) .event-img { border-bottom-color: var(--mist); }
+  .event-card:has(.tag-market) .event-img { border-bottom-color: var(--amber); }
+  .event-card .event-img { height: 6px; }
+  .event-card.featured .event-img { height: 100%; }
+
+
+  /* ── CALENDAR STYLE EVENTS ── */
+  .cal-grid {
+    border: 1px solid var(--iron);
+    overflow: hidden;
+  }
+  .cal-week-header {
+    background: var(--steel);
+    padding: 0.5rem 1.5rem;
+    font-size: 0.6rem; font-weight: 900;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--green-light);
+    border-bottom: 1px solid var(--iron);
+    border-top: 1px solid var(--iron);
+  }
+  .cal-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--charcoal);
+    transition: background 0.15s;
+    min-height: 60px;
+  }
+  .cal-row:hover { background: var(--steel); }
+  .cal-row-recurring {
+    background: rgba(46,139,87,0.04);
+    border-left: 3px solid rgba(46,139,87,0.3);
+  }
+  .cal-row-recurring:hover { background: rgba(46,139,87,0.08); }
+  .cal-date-col {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 0.75rem 0.5rem;
+    border-right: 1px solid var(--iron);
+    background: rgba(13,13,13,0.3);
+    flex-shrink: 0;
+    gap: 0;
+  }
+  .cal-day {
+    font-size: 0.55rem; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--stone);
+  }
+  .cal-num {
+    font-size: 1.6rem; font-weight: 900;
+    letter-spacing: -0.04em; line-height: 1;
+    color: var(--white);
+  }
+  .cal-month {
+    font-size: 0.52rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-light);
+  }
+  .cal-events-col {
+    display: flex; flex-direction: column;
+    gap: 0; padding: 0;
+  }
+  .cal-event {
+    display: flex; flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.75rem 1.25rem;
+    text-decoration: none; color: inherit;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+  }
+  .cal-event:last-child { border-bottom: none; }
+  .cal-event:hover { background: rgba(46,139,87,0.08); }
+  .cal-event.cal-featured { border-left: 3px solid var(--green); }
+  .cal-event.cal-sold-out { opacity: 0.65; }
+  .cal-tag {
+    display: inline-block; font-size: 0.55rem; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.18rem 0.5rem; border: 1px solid; align-self: flex-start;
+    margin-bottom: 0.1rem;
+  }
+  .cal-title {
+    font-size: 0.88rem; font-weight: 800;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    color: var(--cream); line-height: 1.2;
+  }
+  .cal-meta {
+    font-size: 0.7rem; font-weight: 300;
+    color: var(--stone); line-height: 1.4;
+  }
+  @media (max-width: 600px) {
+    .cal-row { grid-template-columns: 60px 1fr; }
+    .cal-num { font-size: 1.2rem; }
+    .events-section { padding: 3rem 1rem; }
+  }
+
+  /* ── EVENTS GRID REDESIGN (legacy, replaced by cal) ── */
   .events-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -205,8 +304,8 @@
   }
   .event-card.featured .event-img img { height: 100%; filter: brightness(0.3) saturate(0.5); }
   .event-card.featured:hover .event-img img { filter: brightness(0.4) saturate(0.6); }
-  .event-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
-  .event-card.featured .event-body { position: relative; z-index: 1; padding: 2rem; background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.6) 70%, transparent 100%); }
+  .event-body { isolation: isolate; padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+  .event-card.featured .event-body { isolation: isolate; position: relative; z-index: 1; padding: 2rem; background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.6) 70%, transparent 100%); }
   .event-tag {
     display: inline-block; font-size: 0.55rem; font-weight: 800;
     letter-spacing: 0.14em; text-transform: uppercase;
@@ -409,205 +508,264 @@
       <h2 class="section-title">Upcoming <span>Events</span></h2>
     </div>
   </div>
-  <div class="events-grid">
+  <div class="cal-grid">
 
-    <!-- The Moth -->
-    <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1508997449629-303059a039c0?w=600&q=70" alt="The Moth StorySLAM" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-art">Storytelling</span>
-        <p class="event-date">Mon, May 11 · 8pm</p>
-        <h3 class="event-title">The Moth StorySLAM</h3>
-        <p class="event-venue">The Bell House · 149 7th St · $33+ tickets →</p>
-      </div>
-    </a>
+  <!-- ═══ WEEK 1 ═══ -->
+  <div class="cal-week-header">Week of May 11</div>
 
-    <!-- Sam Campbell -->
-    <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=600&q=70" alt="Sam Campbell" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-art">Comedy · Sold Out</span>
-        <p class="event-date">Tue–Wed, May 12–13 · 7:30pm</p>
-        <h3 class="event-title">Sam Campbell — Two Nights</h3>
-        <p class="event-venue">The Bell House · Check resale →</p>
-      </div>
-    </a>
-
-    <!-- Tower Show -->
-    <a href="https://www.artsgowanus.org" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1575340175567-b0f7a46fa93b?w=600&q=70" alt="The Tower Show" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-art">Exhibition · Free</span>
-        <p class="event-date">Through May 17 · Union Channel</p>
-        <h3 class="event-title">The Tower Show — Year 5</h3>
-        <p class="event-venue">240 3rd Ave · Artist water tower interpretations · More info →</p>
-      </div>
-    </a>
-
-    <!-- Patterns Gala -->
-    <a href="https://www.artsgowanus.org" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=70" alt="Patterns Gala" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-art">Annual Gala</span>
-        <p class="event-date">Thu, May 21 · Gowanus Wharf</p>
-        <h3 class="event-title">Patterns Gala: Welcome to Venice</h3>
-        <p class="event-venue">Arts Gowanus Fundraiser · 240 3rd Ave · More info →</p>
-      </div>
-    </a>
-
-    <!-- Bomonti Nights -->
-    <a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://atolyenyc.com/wp-content/uploads/2026/05/ChatGPT-Image-May-5-2026-07_59_23-PM.png" alt="Bomonti Nights" loading="lazy" onerror="this.style.display='none'"></div>
-      <div class="event-body">
-        <span class="event-tag tag-music">Live Music</span>
-        <p class="event-date">Fri, May 23 · 9pm–2am</p>
-        <h3 class="event-title">Bomonti Nights — 90s Turkish Pop Live</h3>
-        <p class="event-venue">Atolye NYC · 236 6th St · Tickets →</p>
-      </div>
-    </a>
-
-    <!-- Ear Hustle -->
-    <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=70" alt="Ear Hustle Live" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-community">Podcast Live</span>
-        <p class="event-date">Thu, May 28 · 7:30pm</p>
-        <h3 class="event-title">Ear Hustle Live!</h3>
-        <p class="event-venue">The Bell House · 149 7th St · Tickets →</p>
-      </div>
-    </a>
-
-    <!-- Summer Night Gala -->
-    <a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://atolyenyc.com/wp-content/uploads/2026/04/Screenshot-2026-04-22-at-8.21.32-PM.png" alt="Summer Night Gala" loading="lazy" onerror="this.style.display='none'"></div>
-      <div class="event-body">
-        <span class="event-tag tag-market">Gala</span>
-        <p class="event-date">Fri, May 29 · 7:30–10:30pm</p>
-        <h3 class="event-title">Summer Night Gala</h3>
-        <p class="event-venue">Atolye NYC · 236 6th St · Tickets →</p>
-      </div>
-    </a>
-
-    <!-- Tatiana & Katie -->
-    <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=600&q=70" alt="Comedy Night" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-art">Comedy</span>
-        <p class="event-date">Fri, May 29 · 9:30pm</p>
-        <h3 class="event-title">Tatiana Frank &amp; Katie Hannigan</h3>
-        <p class="event-venue">The Bell House · Co-headline night · Tickets →</p>
-      </div>
-    </a>
-
-    <a href="https://www.lowlandsbar.com/events/chris-potter-trio" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&q=70" alt="Chris Potter Trio" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-music">Live Jazz</span>
-        <p class="event-date">Mon, May 11 · 9:15pm · Lowlands</p>
-        <h3 class="event-title">Chris Potter Trio</h3>
-        <p class="event-venue">543 3rd Ave · World-class jazz · More info →</p>
-      </div>
-    </a>
-    <a href="https://www.lowlandsbar.com/events/tim-berne-gregg-belisle-chi-aliya-ultan-ches-smith" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.squarespace-cdn.com/content/v1/65775602b8cf102c5bb8c541/1777902961736-0M5PQWE9SB02JPFMSET4/phonto.JPG" alt="Tim Berne" loading="lazy" onerror="this.style.display='none'"></div>
-      <div class="event-body">
-        <span class="event-tag tag-music">Live Jazz</span>
-        <p class="event-date">Tue, May 12 · 9pm · Lowlands</p>
-        <h3 class="event-title">Tim Berne · Gregg Belisle-Chi · Ches Smith</h3>
-        <p class="event-venue">543 3rd Ave · Avant-garde jazz · More info →</p>
-      </div>
-    </a>
-    <a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" class="event-card recurring">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=70" alt="Karaoke at Lowlands" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-recurring-badge">Every Wednesday</span>
-        <span class="event-tag tag-music">Karaoke</span>
-        <p class="event-date">Every Wednesday · 8:30pm · Lowlands</p>
-        <h3 class="event-title">Karaoke with Amethyst Valentino</h3>
-        <p class="event-venue">543 3rd Ave · Full events calendar →</p>
-      </div>
-    </a>
-    <a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" class="event-card recurring">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&q=70" alt="Live Music Lowlands" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-recurring-badge">Every Mon &amp; Tue</span>
-        <span class="event-tag tag-music">Live Music</span>
-        <p class="event-date">Every Mon &amp; Tue · Lowlands</p>
-        <h3 class="event-title">Live Music Mondays + Tuesdays</h3>
-        <p class="event-venue">543 3rd Ave · Full events calendar →</p>
-      </div>
-    </a>
-
-    <a href="https://www.instagram.com/p/DXNHxN6CfFm/" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=70" alt="Autumn's Attic Grand Opening" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-market">Grand Opening 🎉</span>
-        <p class="event-date">Sat, June 6 · 12pm–5pm</p>
-        <h3 class="event-title">Autumn's Attic Grand Opening</h3>
-        <p class="event-venue">152 9th Street, Gowanus · Antique furniture · Vintage · Gifts · Free to attend →</p>
-      </div>
-    </a>
-
-    <a href="https://badassanimalrescue.com/events-list/woofstock-badass-street-fest" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="http://static1.squarespace.com/static/5fa9da29ae329e7a2eb6cbcc/65b2d1696fd62e2ab851b50e/69b86a3522ae6b410fbfeab6/1773693596990/SUNDAY%2C+MAY+17th.png?format=1500w" alt="Woofstock: Badass Street Fest" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-community">Street Fest 🐕</span>
-        <p class="event-date">Sun, May 17 · Gowanus</p>
-        <h3 class="event-title">Woofstock: Badass Street Fest</h3>
-        <p class="event-venue">Badass Animal Rescue · Adoptable dogs · Vendors · Music · RSVP →</p>
-      </div>
-    </a>
-
-    <a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" class="event-card">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=600&q=70" alt="Community Meeting" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-tag tag-community">Community · Free</span>
-        <p class="event-date">Tue, May 19 · Gowanus</p>
-        <h3 class="event-title">NYC Parks: Gowanus Waterfront Input Meeting</h3>
-        <p class="event-venue">In-person community input on waterfront sites · NYC Parks · RSVP →</p>
-      </div>
-    </a>
-
-    <!-- FREE CANOEING - recurring -->
-    <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="event-card recurring">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?w=600&q=70" alt="Canoeing on the Gowanus" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-recurring-badge">Every weekend from late May</span>
-        <span class="event-tag tag-community">Free · Outdoors</span>
-        <p class="event-date">Weekends · 165 2nd St</p>
-        <h3 class="event-title">Free Canoeing on the Gowanus Canal</h3>
-        <p class="event-venue">Dredgers Boathouse · Self-guided · No reservation needed →</p>
-      </div>
-    </a>
-
-    <!-- BITCHES BREW - recurring -->
-    <a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" class="event-card recurring">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=70" alt="Comedy Night at Halyards" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-recurring-badge">Every Friday night</span>
-        <span class="event-tag tag-art">Comedy · Free</span>
-        <p class="event-date">Every Friday · Halyards</p>
-        <h3 class="event-title">Bitches Brew Comedy Night</h3>
-        <p class="event-venue">406 3rd Ave · Various comics · Walk-in welcome · @halyard_bar →</p>
-      </div>
-    </a>
-
-    <!-- JUG & STRING - recurring -->
-    <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="event-card recurring">
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=70" alt="Jug and String Band" loading="lazy"></div>
-      <div class="event-body">
-        <span class="event-recurring-badge">Every Tuesday</span>
-        <span class="event-tag tag-music">Music · Free</span>
-        <p class="event-date">Every Tuesday · Dredgers Boathouse</p>
-        <h3 class="event-title">Gowanus Jug &amp; String Band Sessions</h3>
-        <p class="event-venue">165 2nd St · Intermediate &amp; advanced players welcome →</p>
-      </div>
-    </a>
-
-    <!-- NYC PARKS MEETING -->
-
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">MON</span>
+      <span class="cal-num">11</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-art">Storytelling</span>
+        <span class="cal-title">The Moth StorySLAM</span>
+        <span class="cal-meta">8pm · The Bell House · 149 7th St · $33+ →</span>
+      </a>
+      <a href="https://www.lowlandsbar.com/events/chris-potter-trio" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Live Jazz</span>
+        <span class="cal-title">Chris Potter Trio</span>
+        <span class="cal-meta">9:15pm · Lowlands · 543 3rd Ave →</span>
+      </a>
+    </div>
   </div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">TUE</span>
+      <span class="cal-num">12</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="cal-event cal-sold-out">
+        <span class="cal-tag tag-art">Comedy · Sold Out</span>
+        <span class="cal-title">Sam Campbell — Night 1</span>
+        <span class="cal-meta">7:30pm · The Bell House · Check resale →</span>
+      </a>
+      <a href="https://www.lowlandsbar.com/events/tim-berne-gregg-belisle-chi-aliya-ultan-ches-smith" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Live Jazz</span>
+        <span class="cal-title">Tim Berne · Gregg Belisle-Chi · Ches Smith</span>
+        <span class="cal-meta">9pm · Lowlands · 543 3rd Ave →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">WED</span>
+      <span class="cal-num">13</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="cal-event cal-sold-out">
+        <span class="cal-tag tag-art">Comedy · Sold Out</span>
+        <span class="cal-title">Sam Campbell — Night 2</span>
+        <span class="cal-meta">7:30pm · The Bell House · Check resale →</span>
+      </a>
+      <a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Karaoke</span>
+        <span class="cal-title">Karaoke with Amethyst Valentino</span>
+        <span class="cal-meta">8:30pm · Lowlands · Every Wednesday →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">SUN</span>
+      <span class="cal-num">17</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.artsgowanus.org" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-art">Exhibition · Free</span>
+        <span class="cal-title">The Tower Show — Year 5 <span style="font-weight:300;font-size:0.75em">(through May 17)</span></span>
+        <span class="cal-meta">Union Channel · 240 3rd Ave · Free →</span>
+      </a>
+      <a href="https://badassanimalrescue.com/events-list/woofstock-badass-street-fest" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-community">Street Fest 🐕</span>
+        <span class="cal-title">Woofstock: Badass Street Fest</span>
+        <span class="cal-meta">Gowanus · Adoptable dogs · Vendors · Music · RSVP →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ WEEK 2 ═══ -->
+  <div class="cal-week-header">Week of May 19</div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">TUE</span>
+      <span class="cal-num">19</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.nycgovparks.org/events/2026/05/19/inperson-community-input-meeting-for-sites-along-the-gowanus" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-community">Community · Free</span>
+        <span class="cal-title">NYC Parks: Gowanus Waterfront Input Meeting</span>
+        <span class="cal-meta">Gowanus · In-person community input on waterfront sites · RSVP →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">THU</span>
+      <span class="cal-num">21</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.artsgowanus.org" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-art">Annual Gala</span>
+        <span class="cal-title">Patterns Gala: Welcome to Venice</span>
+        <span class="cal-meta">Gowanus Wharf · Arts Gowanus Fundraiser · More info →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">FRI</span>
+      <span class="cal-num">23</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://atolyenyc.com/event/bomonti-nights-live-edition-90lar-turkce-pop/" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Live Music</span>
+        <span class="cal-title">Bomonti Nights — 90s Turkish Pop Live</span>
+        <span class="cal-meta">9pm–2am · Atolye NYC · 236 6th St · Tickets →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ WEEK 3 ═══ -->
+  <div class="cal-week-header">Week of May 26</div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">THU</span>
+      <span class="cal-num">28</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-community">Podcast Live</span>
+        <span class="cal-title">Ear Hustle Live!</span>
+        <span class="cal-meta">7:30pm · The Bell House · 149 7th St · Tickets →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">FRI</span>
+      <span class="cal-num">29</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://atolyenyc.com/event/summer-night-gala/" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-market">Gala</span>
+        <span class="cal-title">Summer Night Gala</span>
+        <span class="cal-meta">7:30–10:30pm · Atolye NYC · 236 6th St · Tickets →</span>
+      </a>
+      <a href="https://www.thebellhouseny.com/shows" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-art">Comedy</span>
+        <span class="cal-title">Tatiana Frank &amp; Katie Hannigan</span>
+        <span class="cal-meta">9:30pm · The Bell House · Co-headline night · Tickets →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ JUNE ═══ -->
+  <div class="cal-week-header">June</div>
+
+  <div class="cal-row">
+    <div class="cal-date-col">
+      <span class="cal-day">SAT</span>
+      <span class="cal-num">6</span>
+      <span class="cal-month">JUN</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.instagram.com/p/DXNHxN6CfFm/" target="_blank" rel="noopener" class="cal-event cal-featured">
+        <span class="cal-tag tag-market">Grand Opening 🎉</span>
+        <span class="cal-title">Autumn's Attic Grand Opening</span>
+        <span class="cal-meta">12pm–5pm · 152 9th Street, Gowanus · Antique furniture · Vintage · Free →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ RECURRING ═══ -->
+  <div class="cal-week-header">Every Week</div>
+
+  <div class="cal-row cal-row-recurring">
+    <div class="cal-date-col">
+      <span class="cal-day">MON</span>
+      <span class="cal-num">+</span>
+      <span class="cal-day">TUE</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Live Music · Weekly</span>
+        <span class="cal-title">Live Music Mondays + Tuesdays at Lowlands</span>
+        <span class="cal-meta">Lowlands · 543 3rd Ave · Full calendar →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row cal-row-recurring">
+    <div class="cal-date-col">
+      <span class="cal-day">TUE</span>
+      <span class="cal-num">↻</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Music · Free</span>
+        <span class="cal-title">Gowanus Jug &amp; String Band Sessions</span>
+        <span class="cal-meta">Dredgers Boathouse · 165 2nd St · Intermediate &amp; advanced players →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row cal-row-recurring">
+    <div class="cal-date-col">
+      <span class="cal-day">WED</span>
+      <span class="cal-num">↻</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.lowlandsbar.com/events" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-music">Karaoke · Weekly</span>
+        <span class="cal-title">Karaoke with Amethyst Valentino</span>
+        <span class="cal-meta">8:30pm · Lowlands · 543 3rd Ave →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row cal-row-recurring">
+    <div class="cal-date-col">
+      <span class="cal-day">FRI</span>
+      <span class="cal-num">↻</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.instagram.com/halyard_bar" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-art">Comedy · Free</span>
+        <span class="cal-title">Bitches Brew Comedy Night</span>
+        <span class="cal-meta">Every Friday · Halyards · 406 3rd Ave · Walk-in welcome →</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-row cal-row-recurring">
+    <div class="cal-date-col">
+      <span class="cal-day">WKD</span>
+      <span class="cal-num">↻</span>
+    </div>
+    <div class="cal-events-col">
+      <a href="https://www.gowanuscanal.org/dredgers" target="_blank" rel="noopener" class="cal-event">
+        <span class="cal-tag tag-community">Free · Outdoors</span>
+        <span class="cal-title">Free Canoeing on the Gowanus Canal</span>
+        <span class="cal-meta">Weekends from late May · Dredgers Boathouse · 165 2nd St · No reservation →</span>
+      </a>
+    </div>
+  </div>
+
+</div>
 </section>
+
+<!-- COMMUNITY ORGS
 
 
 
@@ -1115,7 +1273,7 @@ async function loadEventsFromSheet() {
     fc.href = featured.link || '#';
     fc.className = 'event-card featured';
     fc.innerHTML = `
-      <div class="event-img"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=70" alt="Featured event"></div>
+      <div class="event-img" style="background:var(--steel);"></div>
       <span class="event-tag ${TAG_CLASSES[featured.category] || 'tag-community'}">${featured.category || 'Event'}</span>
       <p class="event-date">${featured.date}</p>
       <h3 class="event-title">${featured.title}</h3>
