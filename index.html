@@ -1022,8 +1022,8 @@
 const EVENTS_SHEET_ID = '1P95qcx_ZMoSHMX2ELkwP-6IkypMRszfCkl-YM2Xvc4U';
 const EVENTS_CSV_URL = `https://docs.google.com/spreadsheets/d/${EVENTS_SHEET_ID}/gviz/tq?tqx=out:csv`;
 
-const SEASON_START = new Date('2026-06-01T00:00:00');
-const SEASON_END   = new Date('2026-08-31T23:59:59');
+// No fixed date window - the calendar shows every "Ready to Publish" event
+// from today onward, for as far out as the Sheet has them.
 
 // ---- tiny RFC4180-ish CSV parser (handles quoted fields with commas) ----
 function parseCSV(text) {
@@ -1101,7 +1101,7 @@ async function loadEventsFromSheet() {
       }
 
       const singleDate = parseSingleDate(dateColTrim);
-      if (singleDate && singleDate >= today && singleDate >= SEASON_START && singleDate <= SEASON_END) {
+      if (singleDate && singleDate >= today) {
         calendarItems.push({ date: singleDate, day, name, venue, address, category, time, link, notes });
       } else if (dateColTrim) {
         // Anything that isn't "Ongoing" and isn't a clean single date —
