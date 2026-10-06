@@ -78,7 +78,8 @@
 
   /* TICKER */
   .ticker-wrap { background: var(--rust); padding: 0.65rem 0; overflow: hidden; white-space: nowrap; }
-  .ticker-inner { display: inline-block; animation: ticker 90s linear infinite; }
+  .ticker-inner { display: inline-block; animation: ticker 180s linear infinite; }
+  .ticker-wrap:hover .ticker-inner { animation-play-state: paused; }
   .ticker-inner span { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); margin: 0 2.5rem; }
   .ticker-inner span::before { content: '◆'; margin-right: 2.5rem; opacity: 0.45; font-size: 0.45rem; vertical-align: middle; }
   @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -467,6 +468,7 @@
     <li><a href="#history">History</a></li>
     <li><a href="#directory">Directory</a></li>
     <li><a href="#community">Community</a></li>
+    <li><a href="https://substack.com/@gowanuslocals" target="_blank" rel="noopener">Substack</a></li>
     <li><a href="mailto:GowanusLocals@gmail.com" class="nav-cta">Something to Add? Update? Just wanna say hi?</a></li>
   </ul>
 </nav>
@@ -481,8 +483,7 @@
   <div class="hero-content">
     <span class="hero-label">Gowanus, Brooklyn, NY</span>
     <h1 class="hero-title">Industrial.<br><span class="accent">Creative.</span>Superfun.</h1>
-    <p class="hero-desc">From the canal banks and music venues, to the art studios and dive bars, to the restaurants, bakeries and quirky shops — here's just about everything about Gowanus, Brooklyn — including how you can support the artists, musicians and small businesses that have been here for years, in a changing neighborhood. Made by locals, for locals.</p>
-  <p class="header-sub" style="margin-top:6px; color: var(--muted); font-size:12px;">Like this site? Keep it running by <a href="https://buymeacoffee.com/heythanksalot" target="_blank" rel="noopener" style="color:var(--accent2); text-decoration:underline; text-underline-offset:3px;">buying me a coffee ☕</a></p>
+    <p class="hero-desc">From the canal banks and music venues, to the art studios and dive bars, to the restaurants, bakeries and quirky shops — here's just about everything about Gowanus, Brooklyn — including how you can support the artists, musicians and small businesses that have been here for years, in a changing neighborhood. Made by locals, for locals. Like this site? Keep it running by <a href="https://buymeacoffee.com/heythanksalot" target="_blank" rel="noopener" style="color:var(--rust-light);text-decoration:underline;text-underline-offset:3px;">buying me a coffee</a> ☕</p>
     <div class="hero-actions">
       <a href="#events" class="btn-rust">What's on this week</a>
       <a href="#history" class="btn-ghost">The neighborhood story</a>
@@ -865,6 +866,7 @@
       Subscribe on Substack — it's free
     </a>
     <p class="nl-fine">Opens in Substack · Free forever · Unsubscribe anytime</p>
+    <p style="margin-top:1.25rem;font-size:0.75rem;"><a href="https://substack.com/@gowanuslocals" target="_blank" rel="noopener" style="color:var(--rust-light);text-decoration:none;">Follow @gowanuslocals on Substack →</a></p>
   </div>
 </section>
 
@@ -927,11 +929,6 @@
         <p style="font-size:0.75rem;font-weight:300;color:var(--stone);line-height:1.65;">Argentine wood-fired pizza and that incredible atmosphere. Gone too soon. Check out their Manhattan location! <a href="https://www.instagram.com/estanciapiola/" target="_blank" style="color:var(--green-light);text-decoration:none;">@estanciapiola →</a> 🍕</p>
       </div>
       <div style="background:var(--charcoal);padding:1.5rem;">
-        <p style="font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--cream);margin-bottom:0.25rem;">Insa</p>
-        <p style="font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--rust-light);margin-bottom:0.5rem;">Korean BBQ · Karaoke · 328 Douglass St</p>
-        <p style="font-size:0.75rem;font-weight:300;color:var(--stone);line-height:1.65;">Korean BBQ with tabletop grills and private karaoke rooms. The best birthday spot in Gowanus. RIP to the karaoke nights. 🎤</p>
-      </div>
-      <div style="background:var(--charcoal);padding:1.5rem;">
         <p style="font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--cream);margin-bottom:0.25rem;">Dirty Precious</p>
         <p style="font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--rust-light);margin-bottom:0.5rem;">Bar · 232 3rd Ave · Closed Aug 2025</p>
         <p style="font-size:0.75rem;font-weight:300;color:var(--stone);line-height:1.65;">Nearly a decade of neighborhood bar energy. Women Owned & One of Gowanus' most beloved spots. <a href="https://www.instagram.com/dirtypreciousbk/" target="_blank" style="color:var(--green-light);text-decoration:none;">@dirtypreciousbk →</a> 🥂</p>
@@ -961,6 +958,7 @@
           <a href="https://www.voiceofgowanus.org/" target="_blank">→ Voice of Gowanus</a>
           <a href="https://gowanusimprovementdistrict.org/" target="_blank">→ Gowanus Improvement District</a>
           <a href="https://gowanuslocal.substack.com/" target="_blank">→ GowanusLocal Substack</a>
+          <a href="https://substack.com/@gowanuslocals" target="_blank">→ @gowanuslocals on Substack</a>
         </div>
       </div>
       <div>
@@ -988,7 +986,7 @@
           <li><a href="#">About this project</a></li>
           <li><a href="mailto:GowanusLocals@gmail.com">Contact us</a></li>
           <li><a href="https://www.instagram.com/gowanuslocals/" target="_blank">Instagram</a></li>
-          <li><a href="https://gowanuslocal.substack.com/" target="_blank">Substack</a></li>
+          <li><a href="https://substack.com/@gowanuslocals" target="_blank">Substack</a></li>
         </ul>
       </div>
     </div>
